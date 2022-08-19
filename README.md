@@ -5,7 +5,7 @@ Below is a list of all the custom components used in my dashboard.
 NOTE: There are conditions for some cards (colours/icons) which are unused as they have been replaces with picture icons. 
 I have left the code for this in as the pictures will not be to everyones taste.
 
-I have also used the template function of Mushroom cards to use badges to show motion in rooms.
+I have also used the template function of Mushroom badges to show motion in rooms through badges.
 
 Custom Integrations/Frontend Components:
 
