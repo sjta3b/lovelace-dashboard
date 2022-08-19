@@ -1,0 +1,3798 @@
+kiosk_mode:
+  hide_header: true
+  non_admin_settings:
+    kiosk: true
+views:
+  - theme: Backend-selected
+    title: Home
+    icon: hue:home
+    badges: []
+    cards:
+      - type: vertical-stack
+        cards:
+          - type: horizontal-stack
+            cards:
+              - type: custom:mushroom-template-card
+                primary: ''
+                icon: mdi:home
+                tap_action:
+                  action: navigate
+                  navigation_path: /lovelace-unused/
+                layout: vertical
+                hold_action:
+                  action: none
+                double_tap_action:
+                  action: none
+                icon_color: blue
+                picture: /local/icons/house.png
+              - type: custom:mushroom-template-card
+                primary: ''
+                icon: mdi:lightbulb-multiple
+                layout: vertical
+                tap_action:
+                  action: navigate
+                  navigation_path: /lovelace-unused/lights
+                hold_action:
+                  action: call-service
+                  service: script.internal_all_off
+                  service_data: {}
+                  target: {}
+                double_tap_action:
+                  action: none
+                icon_color: orange
+                picture: /local/icons/light.png
+              - type: custom:mushroom-template-card
+                primary: ''
+                icon: mdi:home-modern
+                tap_action:
+                  action: navigate
+                  navigation_path: /lovelace-unused/rooms
+                layout: vertical
+                hold_action:
+                  action: none
+                double_tap_action:
+                  action: none
+                icon_color: red
+                picture: /local/icons/room.png
+              - type: custom:mushroom-template-card
+                primary: ''
+                layout: vertical
+                icon_color: green
+                icon: mdi:shield
+                tap_action:
+                  action: navigate
+                  navigation_path: /lovelace-unused/security
+                hold_action:
+                  action: none
+                double_tap_action:
+                  action: none
+                picture: /local/icons/lock.png
+              - type: custom:mushroom-template-card
+                primary: ''
+                icon: mdi:devices
+                layout: vertical
+                tap_action:
+                  action: navigate
+                  navigation_path: /lovelace-unused/other
+                hold_action:
+                  action: none
+                double_tap_action:
+                  action: none
+                icon_color: purple
+                picture: /local/icons/automation.png
+          - type: custom:mushroom-chips-card
+            chips:
+              - type: menu
+              - type: back
+              - type: template
+                content: >-
+                  {{ expand('light.living_room_level_on_off',
+                  'light.lamp','light.goveetv','light.kitchen_spots',
+                  'light.kitchen_led','light.table','light.front_door','light.hall','light.landing','light.toilet_on_off','light.led1',
+                  'light.bedroom','light.ensuite_on_off','light.office','light.outside_front',
+                  'light.outside_back') 
+                     | selectattr('state', 'eq', 'on')
+                     | list | count }}
+                  light(s) on
+                icon: mdi:lightbulb
+                icon_color: orange
+                hold_action:
+                  action: call-service
+                  service: script.internal_all_off
+                  service_data: {}
+                  target: {}
+                double_tap_action:
+                  action: none
+                tap_action:
+                  action: none
+                picture: /local/icons/light.png
+              - type: template
+                double_tap_action:
+                  action: none
+                content: >-
+                  {{
+                  expand('media_player.lg_tv','media_player.kitchentv','binary_sensor.pc_status','binary_sensor.server','media_player.bedroom_speaker')
+                     | selectattr('state', 'eq', 'on')
+                     | list | count +
+
+                    expand('media_player.bedroom_speaker','media_player.living_room_speaker','media_player.kitchen_speaker',)
+                     | selectattr('state', 'eq', 'playing')
+                     | list | count }}
+
+                  device(s) on
+                tap_action:
+                  action: call-service
+                  service: browser_mod.popup
+                  data:
+                    title: Online Devices
+                    card:
+                      type: vertical-stack
+                      cards:
+                        - type: conditional
+                          conditions:
+                            - entity: binary_sensor.server
+                              state: 'on'
+                          card:
+                            type: custom:mushroom-template-card
+                            primary: Server is online
+                            secondary: ''
+                            icon: mdi:home
+                            picture: /local/icons/server.png
+                        - type: conditional
+                          conditions:
+                            - entity: binary_sensor.pc_status
+                              state: 'on'
+                          card:
+                            type: custom:mushroom-template-card
+                            primary: PC is online
+                            secondary: ''
+                            icon: mdi:home
+                            picture: /local/icons/computer.png
+                        - type: conditional
+                          conditions:
+                            - entity: media_player.lg_tv
+                              state: 'on'
+                          card:
+                            type: custom:mushroom-template-card
+                            primary: Living Room TV is on
+                            secondary: ''
+                            icon: mdi:home
+                            picture: /local/icons/tv.png
+                        - type: conditional
+                          conditions:
+                            - entity: media_player.kitchentv
+                              state: 'on'
+                          card:
+                            type: custom:mushroom-template-card
+                            primary: Kitchen TV is on
+                            secondary: ''
+                            icon: mdi:home
+                            picture: /local/icons/tv.png
+                        - type: conditional
+                          conditions:
+                            - entity: media_player.bedroom_speaker
+                              state: playing
+                          card:
+                            type: custom:mushroom-template-card
+                            primary: Bedroom Speaker is playing
+                            secondary: ''
+                            icon: mdi:home
+                            picture: /local/icons/speaker.png
+                        - type: conditional
+                          conditions:
+                            - entity: media_player.kitchen_speaker
+                              state: playing
+                          card:
+                            type: custom:mushroom-template-card
+                            primary: Kitchen Speaker is playing
+                            secondary: ''
+                            icon: mdi:home
+                            picture: /local/icons/speaker.png
+                        - type: conditional
+                          conditions:
+                            - entity: media_player.living_room_speaker
+                              state: playing
+                          card:
+                            type: custom:mushroom-template-card
+                            primary: Living Room Speaker is playing
+                            secondary: ''
+                            icon: mdi:home
+                            picture: /local/icons/speaker.png
+                  target: {}
+                picture: /local/icons/tv.png
+            alignment: start
+          - type: horizontal-stack
+            cards:
+              - type: custom:mushroom-person-card
+                entity: person.stephen_torney
+                tap_action:
+                  action: more-info
+                hold_action:
+                  action: none
+                double_tap_action:
+                  action: none
+                icon_type: entity-picture
+              - type: custom:mushroom-person-card
+                entity: person.niamh
+                tap_action:
+                  action: none
+                hold_action:
+                  action: none
+                double_tap_action:
+                  action: none
+                icon_type: entity-picture
+          - type: vertical-stack
+            cards:
+              - type: custom:mushroom-title-card
+                alignment: center
+                subtitle: ''
+              - type: horizontal-stack
+                cards:
+                  - type: custom:mushroom-template-card
+                    icon: hue:room-living
+                    primary: Living Room
+                    tap_action:
+                      action: call-service
+                      service: script.nav_livingroom
+                      data: {}
+                      target: {}
+                    hold_action:
+                      action: toggle
+                    secondary: >-
+                      {{ expand('light.living_room_level_on_off',
+                      'light.lamp','light.goveetv') 
+                         | selectattr('state', 'eq', 'on')
+                         | list | count }} light(s) on
+                      TV: {{ states('media_player.lg_tv') }}  Server: {{
+                      states('binary_sensor.server') }}
+                    icon_color: |-
+                      {% if is_state('light.living_room_level_on_off', 'on') %}
+                      orange
+                      {% elif is_state('light.lamp', 'on') %}
+                      orange
+                      {% elif is_state('light.goveetv', 'on') %}
+                      orange
+                      {% endif %}
+                    double_tap_action:
+                      action: call-service
+                      service: wake_on_lan.send_magic_packet
+                      service_data:
+                        mac: 64-95-6C-96-B6-0A
+                      target: {}
+                    multiline_secondary: true
+                    badge_color: >-
+                      {% if ((as_timestamp(now()) -
+                      as_timestamp(states.sensor.living_motion.last_changed |
+                      default(0)) | int ) | timestamp_custom("%H%M", false)|int
+                      < 1) %}
+
+                      red
+
+                      {% elif ((as_timestamp(now()) -
+                      as_timestamp(states.sensor.living_motion.last_changed |
+                      default(0)) | int ) | timestamp_custom("%H%M", false)|int
+                      < 3) %}
+
+                      orange
+
+                      {% elif ((as_timestamp(now()) -
+                      as_timestamp(states.sensor.living_motion.last_changed |
+                      default(0)) | int ) | timestamp_custom("%H%M", false)|int
+                      < 5) %}
+
+                      green
+
+                      {% elif ((as_timestamp(now()) -
+                      as_timestamp(states.sensor.living_motion.last_changed |
+                      default(0)) | int ) | timestamp_custom("%H%M", false)|int
+                      > 6) %}
+
+                      transparent
+
+                      {% endif %}
+                    badge_icon: >-
+                      {% if ((as_timestamp(now()) -
+                      as_timestamp(states.sensor.living_motion.last_changed |
+                      default(0)) | int ) | timestamp_custom("%H%M", false)|int
+                      < 6) %}
+
+                      mdi:motion-sensor
+
+                      {% endif %}
+                    picture: /local/icons/sofa.png
+                    entity: light.living_room_level_on_off
+                  - type: custom:mushroom-template-card
+                    primary: Kitchen
+                    entity: light.kitchen_spots
+                    tap_action:
+                      action: call-service
+                      service: script.nav_kitchen
+                      data: {}
+                      target: {}
+                    double_tap_action:
+                      action: none
+                    hold_action:
+                      action: toggle
+                    icon_color: |-
+                      {% if is_state('light.kitchen_spots', 'on') %}
+                      orange
+                      {% elif is_state('light.kitchen_led', 'on') %}
+                       orange
+                      {% elif is_state('light.table', 'on') %}
+                       orange
+                      {% endif %}
+                    secondary: >-
+                      {{ expand('light.kitchen_spots',
+                      'light.kitchen_led','light.table') 
+                         | selectattr('state', 'eq', 'on')
+                         | list | count }} light(s) on
+                      {{ states('sensor.hue_motion_sensor_1_temperature')}}°C
+                    multiline_secondary: true
+                    icon: hue:room-dining
+                    badge_color: >+
+                      {% if ((as_timestamp(now()) -
+                      as_timestamp(states.sensor.kitchen_motion.last_changed |
+                      default(0)) | int ) | timestamp_custom("%H%M", false)|int
+                      < 1) %}
+
+                      red
+
+                      {% elif ((as_timestamp(now()) -
+                      as_timestamp(states.sensor.kitchen_motion.last_changed |
+                      default(0)) | int ) | timestamp_custom("%H%M", false)|int
+                      < 3) %}
+
+                      orange
+
+                      {% elif ((as_timestamp(now()) -
+                      as_timestamp(states.sensor.kitchen_motion.last_changed |
+                      default(0)) | int ) | timestamp_custom("%H%M", false)|int
+                      < 5) %}
+
+                      green
+
+                      {% elif ((as_timestamp(now()) -
+                      as_timestamp(states.sensor.kitchen_motion.last_changed |
+                      default(0)) | int ) | timestamp_custom("%H%M", false)|int
+                      > 6) %}
+
+                      transparent
+
+                      {% endif %}
+
+                    badge_icon: >-
+                      {% if ((as_timestamp(now()) -
+                      as_timestamp(states.sensor.kitchen_motion.last_changed |
+                      default(0)) | int ) | timestamp_custom("%H%M", false)|int
+                      <= 6) %}
+
+                      mdi:motion-sensor
+
+                      {% endif %}
+                    picture: /local/icons/kitchen.png
+              - type: horizontal-stack
+                cards:
+                  - type: custom:mushroom-template-card
+                    icon: hue:room-hallway
+                    entity: light.hall
+                    primary: Hall
+                    tap_action:
+                      action: call-service
+                      service: script.nav_hall
+                      data: {}
+                      target: {}
+                    hold_action:
+                      action: toggle
+                    secondary: >-
+                      {{
+                      expand('light.front_door','light.hall','light.landing','light.toilet_on_off') 
+                         | selectattr('state', 'eq', 'on')
+                         | list | count }} light(s) on
+                      {{ states('sensor.hive_current')}}°C
+                    icon_color: |-
+                      {% if is_state('light.front_door', 'on') %}
+                      orange
+                      {% elif is_state('light.hall', 'on') %}
+                       orange
+                      {% elif is_state('light.landing', 'on') %}
+                       orange
+                      {% elif is_state('light.toilet_on_off', 'on') %}
+                       orange
+                      {% endif %}
+                    double_tap_action:
+                      action: none
+                    multiline_secondary: true
+                    badge_color: >-
+                      {% if ((as_timestamp(now()) -
+                      as_timestamp(states.sensor.hall_motion.last_changed |
+                      default(0)) | int ) | timestamp_custom("%H%M", false)|int
+                      < 1) %}
+
+                      red
+
+                      {% elif ((as_timestamp(now()) -
+                      as_timestamp(states.sensor.hall_motion.last_changed |
+                      default(0)) | int ) | timestamp_custom("%H%M", false)|int
+                      < 3) %}
+
+                      orange
+
+                      {% elif ((as_timestamp(now()) -
+                      as_timestamp(states.sensor.hall_motion.last_changed |
+                      default(0)) | int ) | timestamp_custom("%H%M", false)|int
+                      < 5) %}
+
+                      green
+
+                      {% elif ((as_timestamp(now()) -
+                      as_timestamp(states.sensor.hall_motion.last_changed |
+                      default(0)) | int ) | timestamp_custom("%H%M", false)|int
+                      > 6) %}
+
+                      transparent
+
+                      {% endif %}
+                    badge_icon: >-
+                      {% if ((as_timestamp(now()) -
+                      as_timestamp(states.sensor.hall_motion.last_changed |
+                      default(0)) | int ) | timestamp_custom("%H%M", false)|int
+                      < 6) %}
+
+                      mdi:motion-sensor
+
+                      {% endif %}
+                    picture: /local/icons/coat.png
+                  - type: custom:mushroom-template-card
+                    primary: Bedroom
+                    icon: mdi:bed-king-outline
+                    entity: light.bedroom
+                    tap_action:
+                      action: call-service
+                      service: script.nav_bedroom
+                      data: {}
+                      target: {}
+                    double_tap_action:
+                      action: none
+                    hold_action:
+                      action: toggle
+                    icon_color: |-
+                      {% if is_state('light.bedroom', 'on') %}
+                      orange
+                      {% elif is_state('light.led1', 'on') %}
+                       orange
+                      {% elif is_state('light.ensuite_on_off', 'on') %}
+                       orange
+                      {% endif %}
+                    secondary: >-
+                      {{ expand('light.led1',
+                      'light.bedroom','light.ensuite_on_off') 
+                         | selectattr('state', 'eq', 'on')
+                         | list | count }}
+                      light(s) on
+                    fill_container: true
+                    badge_color: ''
+                    badge_icon: ''
+                    picture: /local/icons/bed.png
+              - type: horizontal-stack
+                cards:
+                  - type: custom:mushroom-template-card
+                    icon: mdi:desktop-classic
+                    entity: light.office
+                    primary: Office
+                    tap_action:
+                      action: call-service
+                      service: script.nav_office
+                      data: {}
+                      target: {}
+                    hold_action:
+                      action: toggle
+                    secondary: |-
+                      {{ expand('light.office') 
+                         | selectattr('state', 'eq', 'on')
+                         | list | count }} light(s) on
+                      Computer: {{ states('binary_sensor.pc_status') }}
+                    icon_color: |-
+                      {% if is_state('light.office', 'on') %}
+                       orange
+                      {% endif %}
+                    double_tap_action:
+                      action: none
+                    multiline_secondary: true
+                    badge_color: ''
+                    picture: /local/icons/computer.png
+                  - type: custom:mushroom-template-card
+                    primary: Outside
+                    icon: mdi:doorbell-video
+                    entity: light.front_door
+                    tap_action:
+                      action: call-service
+                      service: light.toggle
+                      data: {}
+                      target:
+                        device_id:
+                          - ################################
+                    double_tap_action:
+                      action: call-service
+                      service: light.toggle
+                      service_data: {}
+                      target:
+                        device_id: ################################
+                    hold_action:
+                      action: none
+                    icon_color: |-
+                      {% if is_state('light.outside_front', 'on') %}
+                      orange
+                      {% elif is_state('light.outside_back', 'on') %}
+                       orange
+                      {% endif %}
+                    secondary: |-
+                      Front {{ states('light.outside_front') }}
+                      Back {{ states('light.outside_back') }}
+                    multiline_secondary: true
+                    fill_container: false
+                    picture: /local/icons/outside.png
+          - type: custom:swipe-card
+            card_width: 300px
+            start_card: 2
+            parameters:
+              effect: coverflow
+              grabCursor: true
+              centeredSlides: true
+              slidesPerView: auto
+              coverflowEffect:
+                rotate: 50
+                stretch: 15
+                depth: 100
+                modifier: 1
+                slideShadows: true
+              pagination:
+                type: bullets
+            cards:
+              - type: custom:mini-graph-card
+                name: Temperatures
+                entities:
+                  - entity: sensor.average_temp
+                    name: Hall
+                    show_fill: false
+                    show_legend: false
+                    show_line: false
+                    show_state: true
+                  - entity: sensor.accuweather_realfeel_temperature
+                    name: Outside
+                    show_line: false
+                    show_points: false
+                    show_legend: false
+                    show_state: true
+                  - entity: sensor.hive_current
+                    name: Hall
+                    show_fill: false
+                    show_legend: false
+                  - entity: sensor.hue_motion_sensor_1_temperature
+                    name: Kitchen
+                    show_fill: false
+                    show_legend: false
+                  - entity: input_boolean.day_night
+                    color: black
+                    name: Night
+                    show_line: false
+                    show_points: false
+                    show_legend: false
+                    y_axis: secondary
+                animate: true
+                hours_to_show: 36
+                points_per_hour: 1
+                icon: mdi:thermometer
+                line_width: 3
+                tap_action: none
+              - type: custom:mini-graph-card
+                name: Current Energy Consumption
+                entities:
+                  - entity: sensor.total_power_usage
+                    name: Total
+                    show_line: false
+                    show_fill: false
+                    show_points: false
+                    show_legend: false
+                  - entity: sensor.smart_plug_office_electrical_measurement
+                    name: Office
+                    show_legend: false
+                    color: orange
+                  - entity: sensor.total_tv_power
+                    name: TVs
+                    show_legend: false
+                  - entity: sensor.smart_plug_1_usage
+                    name: Living Room
+                    show_legend: false
+                  - entity: sensor.other_power
+                    name: Other
+                    show_legend: false
+                    color: yellow
+                animate: true
+                hours_to_show: 36
+                points_per_hour: 1
+                icon: mdi:flash
+                line_width: 2
+                tap_action: none
+              - type: custom:mini-graph-card
+                name: Daily Energy Cost
+                entities:
+                  - entity: sensor.daily_energy_price
+                animate: true
+                icon: mdi:currency-gbp
+                hours_to_show: 336
+                aggregate_func: max
+                group_by: date
+                show:
+                  graph: bar
+                  state: true
+                tap_action: none
+              - type: custom:mini-graph-card
+                name: Network Traffic
+                entities:
+                  - entity: sensor.tuf_ax5400_9620_kib_s_received
+                    name: Download
+                    show_state: true
+                    show_legend: false
+                    show_fill: false
+                    color: green
+                  - entity: sensor.tuf_ax5400_9620_kib_s_sent
+                    name: Upload
+                    show_state: true
+                    show_fill: false
+                    color: red
+                animate: true
+                hours_to_show: 12
+                points_per_hour: 8
+                icon: mdi:server-network
+                line_width: 4
+                tap_action: none
+          - square: false
+            columns: 1
+            type: grid
+            cards:
+              - type: conditional
+                conditions:
+                  - entity: group.all_lights
+                    state: 'on'
+                card:
+                  type: custom:mushroom-title-card
+                  alignment: center
+                  subtitle: ''
+              - type: conditional
+                conditions:
+                  - entity: light.outside_front
+                    state: 'on'
+                card:
+                  type: custom:mushroom-light-card
+                  entity: light.outside_front
+                  hide_state: true
+                  show_brightness_control: true
+                  show_color_temp_control: true
+                  tap_action:
+                    action: toggle
+                  hold_action:
+                    action: more-info
+                  icon: mdi:doorbell-video
+                  name: Outside Front
+                  double_tap_action:
+                    action: none
+                  layout: horizontal
+              - type: conditional
+                conditions:
+                  - entity: light.front_door
+                    state: 'on'
+                card:
+                  type: custom:mushroom-light-card
+                  entity: light.front_door
+                  hide_state: true
+                  show_brightness_control: true
+                  tap_action:
+                    action: toggle
+                  hold_action:
+                    action: more-info
+                  icon: mdi:door
+                  name: Front Door
+                  use_light_color: true
+                  double_tap_action:
+                    action: none
+                  layout: horizontal
+              - type: conditional
+                conditions:
+                  - entity: light.hall
+                    state: 'on'
+                card:
+                  type: custom:mushroom-light-card
+                  entity: light.hall
+                  show_brightness_control: true
+                  hide_state: true
+                  tap_action:
+                    action: toggle
+                  hold_action:
+                    action: more-info
+                  icon: mdi:home-floor-0
+                  use_light_color: true
+                  double_tap_action:
+                    action: none
+                  layout: horizontal
+              - type: conditional
+                conditions:
+                  - entity: light.outside_back
+                    state: 'on'
+                card:
+                  type: custom:mushroom-light-card
+                  entity: light.outside_back
+                  show_brightness_control: true
+                  hide_state: true
+                  tap_action:
+                    action: toggle
+                  hold_action:
+                    action: more-info
+                  icon: mdi:outdoor-lamp
+                  use_light_color: true
+                  double_tap_action:
+                    action: none
+                  layout: horizontal
+              - type: conditional
+                conditions:
+                  - entity: light.living_room_level_on_off
+                    state: 'on'
+                card:
+                  type: custom:mushroom-light-card
+                  entity: light.living_room_level_on_off
+                  hide_state: true
+                  show_brightness_control: true
+                  tap_action:
+                    action: toggle
+                  hold_action:
+                    action: more-info
+                  icon: mdi:sofa
+                  name: Living Room
+                  use_light_color: true
+                  double_tap_action:
+                    action: none
+                  layout: horizontal
+              - type: conditional
+                conditions:
+                  - entity: light.lamp
+                    state: 'on'
+                card:
+                  type: custom:mushroom-light-card
+                  entity: light.lamp
+                  show_brightness_control: true
+                  hide_state: true
+                  tap_action:
+                    action: toggle
+                  hold_action:
+                    action: more-info
+                  icon: mdi:floor-lamp
+                  use_light_color: true
+                  double_tap_action:
+                    action: none
+                  layout: horizontal
+              - type: conditional
+                conditions:
+                  - entity: light.goveetv
+                    state: 'on'
+                card:
+                  type: custom:mushroom-light-card
+                  entity: light.goveetv
+                  show_brightness_control: true
+                  hide_state: true
+                  tap_action:
+                    action: toggle
+                  hold_action:
+                    action: more-info
+                  icon: mdi:led-strip-variant
+                  use_light_color: true
+                  double_tap_action:
+                    action: none
+                  layout: horizontal
+              - type: conditional
+                conditions:
+                  - entity: light.kitchen_spots
+                    state: 'on'
+                card:
+                  type: custom:mushroom-light-card
+                  entity: light.kitchen_spots
+                  icon: mdi:silverware-fork-knife
+                  show_brightness_control: true
+                  hide_state: true
+                  tap_action:
+                    action: toggle
+                  hold_action:
+                    action: more-info
+                  double_tap_action:
+                    action: none
+                  show_color_temp_control: true
+                  layout: horizontal
+              - type: conditional
+                conditions:
+                  - entity: light.table
+                    state: 'on'
+                card:
+                  type: custom:mushroom-light-card
+                  entity: light.table
+                  show_brightness_control: true
+                  hide_state: true
+                  tap_action:
+                    action: toggle
+                  hold_action:
+                    action: more-info
+                  icon: mdi:ceiling-light
+                  double_tap_action:
+                    action: none
+                  use_light_color: true
+                  layout: horizontal
+              - type: conditional
+                conditions:
+                  - entity: light.bedroom
+                    state: 'on'
+                card:
+                  type: custom:mushroom-light-card
+                  entity: light.bedroom
+                  show_brightness_control: true
+                  show_color_temp_control: true
+                  hide_state: true
+                  tap_action:
+                    action: toggle
+                  hold_action:
+                    action: more-info
+                  icon: mdi:bed-king
+                  double_tap_action:
+                    action: none
+                  layout: horizontal
+              - type: conditional
+                conditions:
+                  - entity: light.led1
+                    state: 'on'
+                card:
+                  type: custom:mushroom-light-card
+                  entity: light.led1
+                  show_brightness_control: true
+                  show_color_temp_control: true
+                  hide_state: true
+                  tap_action:
+                    action: toggle
+                  hold_action:
+                    action: more-info
+                  icon: mdi:led-strip-variant
+                  name: Bed LED
+                  double_tap_action:
+                    action: none
+                  show_color_control: true
+                  layout: horizontal
+              - type: conditional
+                conditions:
+                  - entity: light.landing
+                    state: 'on'
+                card:
+                  type: custom:mushroom-light-card
+                  entity: light.landing
+                  show_brightness_control: true
+                  hide_state: true
+                  tap_action:
+                    action: toggle
+                  hold_action:
+                    action: more-info
+                  icon: mdi:home-floor-1
+                  use_light_color: true
+                  double_tap_action:
+                    action: none
+                  layout: horizontal
+              - type: conditional
+                conditions:
+                  - entity: light.office
+                    state: 'on'
+                card:
+                  type: custom:mushroom-light-card
+                  entity: light.office
+                  show_brightness_control: true
+                  hide_state: true
+                  tap_action:
+                    action: toggle
+                  hold_action:
+                    action: more-info
+                  icon: mdi:desktop-classic
+                  double_tap_action:
+                    action: none
+                  use_light_color: true
+                  layout: horizontal
+              - type: conditional
+                conditions:
+                  - entity: light.kitchen_led
+                    state: 'on'
+                card:
+                  type: custom:mushroom-light-card
+                  entity: light.kitchen_led
+                  icon: mdi:countertop
+                  show_brightness_control: true
+                  show_color_temp_control: true
+                  show_color_control: true
+                  tap_action:
+                    action: toggle
+                  hide_state: true
+                  use_light_color: true
+                  hold_action:
+                    action: more-info
+                  double_tap_action:
+                    action: none
+                  layout: horizontal
+              - type: conditional
+                conditions:
+                  - entity: light.ensuite_on_off
+                    state: 'on'
+                card:
+                  type: custom:mushroom-entity-card
+                  entity: light.ensuite_on_off
+                  name: Ensuite
+                  icon: mdi:shower-head
+                  hold_action:
+                    action: none
+                  double_tap_action:
+                    action: none
+                  tap_action:
+                    action: toggle
+                  secondary_info: none
+                  icon_color: orange
+              - type: conditional
+                conditions:
+                  - entity: light.toilet_on_off
+                    state: 'on'
+                card:
+                  type: custom:mushroom-entity-card
+                  entity: light.toilet_on_off
+                  name: Toilet
+                  icon: mdi:toilet
+                  hold_action:
+                    action: none
+                  double_tap_action:
+                    action: none
+                  tap_action:
+                    action: toggle
+                  secondary_info: none
+                  icon_color: orange
+  - theme: Backend-selected
+    title: lights
+    path: lights
+    icon: hue:bulb-group
+    badges: []
+    cards:
+      - type: vertical-stack
+        cards:
+          - type: horizontal-stack
+            cards:
+              - type: custom:mushroom-template-card
+                primary: ''
+                icon: mdi:home
+                tap_action:
+                  action: navigate
+                  navigation_path: /lovelace-unused/
+                layout: vertical
+                hold_action:
+                  action: none
+                double_tap_action:
+                  action: none
+                icon_color: blue
+                picture: /local/icons/house.png
+              - type: custom:mushroom-template-card
+                primary: ''
+                icon: mdi:lightbulb-multiple
+                layout: vertical
+                tap_action:
+                  action: navigate
+                  navigation_path: /lovelace-unused/lights
+                hold_action:
+                  action: call-service
+                  service: script.internal_all_off
+                  service_data: {}
+                  target: {}
+                double_tap_action:
+                  action: none
+                icon_color: orange
+                picture: /local/icons/light.png
+              - type: custom:mushroom-template-card
+                primary: ''
+                icon: mdi:home-modern
+                tap_action:
+                  action: navigate
+                  navigation_path: /lovelace-unused/rooms
+                layout: vertical
+                hold_action:
+                  action: none
+                double_tap_action:
+                  action: none
+                icon_color: red
+                picture: /local/icons/room.png
+              - type: custom:mushroom-template-card
+                primary: ''
+                layout: vertical
+                icon_color: green
+                icon: mdi:shield
+                tap_action:
+                  action: navigate
+                  navigation_path: /lovelace-unused/security
+                hold_action:
+                  action: none
+                double_tap_action:
+                  action: none
+                picture: /local/icons/lock.png
+              - type: custom:mushroom-template-card
+                primary: ''
+                icon: mdi:devices
+                layout: vertical
+                tap_action:
+                  action: navigate
+                  navigation_path: /lovelace-unused/other
+                hold_action:
+                  action: none
+                double_tap_action:
+                  action: none
+                icon_color: purple
+                picture: /local/icons/automation.png
+          - type: custom:mushroom-chips-card
+            chips:
+              - type: menu
+              - type: back
+              - type: template
+                double_tap_action:
+                  action: none
+                content: All Off
+                tap_action:
+                  action: call-service
+                  service: homeassistant.turn_off
+                  data: {}
+                  target:
+                    entity_id: group.all_lights
+                hold_action:
+                  action: none
+                icon_color: ''
+                icon: hue:bulb-group-sultan-4-hung-off
+            alignment: start
+          - type: vertical-stack
+            cards:
+              - type: vertical-stack
+                cards:
+                  - square: false
+                    columns: 4
+                    type: grid
+                    cards:
+                      - type: custom:mushroom-template-card
+                        primary: Outside
+                        tap_action:
+                          action: none
+                        hold_action:
+                          action: none
+                        double_tap_action:
+                          action: none
+                        layout: vertical
+                        fill_container: true
+                      - type: custom:mushroom-entity-card
+                        entity: light.outside_front
+                        secondary_info: none
+                        primary_info: none
+                        layout: vertical
+                        tap_action:
+                          action: toggle
+                        hold_action:
+                          action: more-info
+                        double_tap_action:
+                          action: none
+                        icon: mdi:doorbell-video
+                      - type: custom:mushroom-entity-card
+                        entity: light.outside_back
+                        secondary_info: none
+                        primary_info: none
+                        layout: vertical
+                        tap_action:
+                          action: toggle
+                        hold_action:
+                          action: more-info
+                        double_tap_action:
+                          action: none
+                        icon: hue:wall-econic-lantern-top
+                  - square: false
+                    columns: 4
+                    type: grid
+                    cards:
+                      - type: custom:mushroom-template-card
+                        tap_action:
+                          action: none
+                        hold_action:
+                          action: none
+                        double_tap_action:
+                          action: none
+                        layout: vertical
+                        primary: 'Living '
+                        fill_container: true
+                        entity: light.goveetv
+                      - type: custom:mushroom-entity-card
+                        entity: light.living_room_level_on_off
+                        secondary_info: none
+                        primary_info: none
+                        layout: vertical
+                        tap_action:
+                          action: toggle
+                        hold_action:
+                          action: more-info
+                        double_tap_action:
+                          action: none
+                        icon: hue:room-living
+                      - type: custom:mushroom-entity-card
+                        entity: light.lamp
+                        secondary_info: none
+                        primary_info: none
+                        layout: vertical
+                        tap_action:
+                          action: toggle
+                        hold_action:
+                          action: more-info
+                        double_tap_action:
+                          action: none
+                        icon: hue:beyond-solid
+                      - type: custom:mushroom-entity-card
+                        entity: light.goveetv
+                        secondary_info: none
+                        primary_info: none
+                        layout: vertical
+                        tap_action:
+                          action: toggle
+                        hold_action:
+                          action: more-info
+                        double_tap_action:
+                          action: none
+                        icon: hue:lightstrip-tv
+                  - square: false
+                    columns: 4
+                    type: grid
+                    cards:
+                      - type: custom:mushroom-template-card
+                        primary: Downstairs
+                        tap_action:
+                          action: none
+                        hold_action:
+                          action: none
+                        double_tap_action:
+                          action: none
+                        layout: vertical
+                        fill_container: true
+                      - type: custom:mushroom-entity-card
+                        entity: light.front_door
+                        secondary_info: none
+                        primary_info: none
+                        layout: vertical
+                        tap_action:
+                          action: toggle
+                        hold_action:
+                          action: more-info
+                        double_tap_action:
+                          action: none
+                        icon: hue:room-hallway
+                      - type: custom:mushroom-entity-card
+                        entity: light.hall
+                        secondary_info: none
+                        primary_info: none
+                        layout: vertical
+                        tap_action:
+                          action: toggle
+                        hold_action:
+                          action: more-info
+                        double_tap_action:
+                          action: none
+                        icon: hue:downstairs
+                      - type: custom:mushroom-entity-card
+                        entity: light.toilet_on_off
+                        secondary_info: none
+                        primary_info: none
+                        layout: vertical
+                        tap_action:
+                          action: toggle
+                        hold_action:
+                          action: more-info
+                        double_tap_action:
+                          action: none
+                        icon: mdi:toilet
+                  - square: false
+                    columns: 4
+                    type: grid
+                    cards:
+                      - type: custom:mushroom-template-card
+                        primary: Kitchen
+                        tap_action:
+                          action: none
+                        hold_action:
+                          action: none
+                        double_tap_action:
+                          action: none
+                        layout: vertical
+                        fill_container: true
+                      - type: custom:mushroom-entity-card
+                        entity: light.kitchen_spots
+                        secondary_info: none
+                        primary_info: none
+                        layout: vertical
+                        tap_action:
+                          action: toggle
+                        hold_action:
+                          action: more-info
+                        double_tap_action:
+                          action: none
+                        icon: hue:bulb-group-centura-round
+                      - type: custom:mushroom-entity-card
+                        entity: light.kitchen_led
+                        secondary_info: none
+                        primary_info: none
+                        layout: vertical
+                        tap_action:
+                          action: toggle
+                        hold_action:
+                          action: more-info
+                        double_tap_action:
+                          action: none
+                        icon: mdi:countertop
+                      - type: custom:mushroom-entity-card
+                        entity: light.table
+                        secondary_info: none
+                        primary_info: none
+                        layout: vertical
+                        tap_action:
+                          action: toggle
+                        hold_action:
+                          action: more-info
+                        double_tap_action:
+                          action: none
+                        icon: hue:room-dining
+                  - square: false
+                    columns: 4
+                    type: grid
+                    cards:
+                      - type: custom:mushroom-template-card
+                        primary: Bedroom
+                        tap_action:
+                          action: none
+                        hold_action:
+                          action: none
+                        double_tap_action:
+                          action: none
+                        layout: vertical
+                        fill_container: true
+                      - type: custom:mushroom-entity-card
+                        entity: light.bedroom
+                        secondary_info: none
+                        primary_info: none
+                        layout: vertical
+                        tap_action:
+                          action: toggle
+                        hold_action:
+                          action: more-info
+                        double_tap_action:
+                          action: none
+                        icon: hue:room-bedroom
+                      - type: custom:mushroom-entity-card
+                        entity: light.led1
+                        secondary_info: none
+                        primary_info: none
+                        layout: vertical
+                        tap_action:
+                          action: toggle
+                        hold_action:
+                          action: more-info
+                        double_tap_action:
+                          action: none
+                        icon: hue:lightstrip
+                      - type: custom:mushroom-entity-card
+                        entity: light.ensuite_on_off
+                        secondary_info: none
+                        primary_info: none
+                        layout: vertical
+                        tap_action:
+                          action: toggle
+                        hold_action:
+                          action: more-info
+                        double_tap_action:
+                          action: none
+                        icon: mdi:shower-head
+                  - square: false
+                    columns: 4
+                    type: grid
+                    cards:
+                      - type: custom:mushroom-template-card
+                        primary: Upstairs
+                        tap_action:
+                          action: none
+                        hold_action:
+                          action: none
+                        double_tap_action:
+                          action: none
+                        layout: vertical
+                        fill_container: true
+                      - type: custom:mushroom-entity-card
+                        entity: light.landing
+                        secondary_info: none
+                        primary_info: none
+                        layout: vertical
+                        tap_action:
+                          action: toggle
+                        hold_action:
+                          action: more-info
+                        double_tap_action:
+                          action: none
+                        icon: hue:upstairs
+                      - type: custom:mushroom-entity-card
+                        entity: light.office
+                        secondary_info: none
+                        primary_info: none
+                        layout: vertical
+                        tap_action:
+                          action: toggle
+                        hold_action:
+                          action: more-info
+                        double_tap_action:
+                          action: none
+                        icon: hue:room-office
+          - square: false
+            columns: 1
+            type: grid
+            cards:
+              - type: conditional
+                conditions:
+                  - entity: light.outside_front
+                    state: 'on'
+                card:
+                  type: custom:mushroom-light-card
+                  entity: light.outside_front
+                  hide_state: true
+                  show_brightness_control: true
+                  show_color_temp_control: true
+                  tap_action:
+                    action: toggle
+                  hold_action:
+                    action: more-info
+                  icon: mdi:doorbell-video
+                  name: Outside Front
+                  double_tap_action:
+                    action: none
+                  layout: horizontal
+              - type: conditional
+                conditions:
+                  - entity: light.front_door
+                    state: 'on'
+                card:
+                  type: custom:mushroom-light-card
+                  entity: light.front_door
+                  hide_state: true
+                  show_brightness_control: true
+                  tap_action:
+                    action: toggle
+                  hold_action:
+                    action: more-info
+                  icon: mdi:door
+                  name: Front Door
+                  use_light_color: true
+                  double_tap_action:
+                    action: none
+                  layout: horizontal
+              - type: conditional
+                conditions:
+                  - entity: light.hall
+                    state: 'on'
+                card:
+                  type: custom:mushroom-light-card
+                  entity: light.hall
+                  show_brightness_control: true
+                  hide_state: true
+                  tap_action:
+                    action: toggle
+                  hold_action:
+                    action: more-info
+                  icon: mdi:home-floor-0
+                  use_light_color: true
+                  double_tap_action:
+                    action: none
+                  layout: horizontal
+              - type: conditional
+                conditions:
+                  - entity: light.outside_back
+                    state: 'on'
+                card:
+                  type: custom:mushroom-light-card
+                  entity: light.outside_back
+                  show_brightness_control: true
+                  hide_state: true
+                  tap_action:
+                    action: toggle
+                  hold_action:
+                    action: more-info
+                  icon: mdi:outdoor-lamp
+                  use_light_color: true
+                  double_tap_action:
+                    action: none
+                  layout: horizontal
+              - type: conditional
+                conditions:
+                  - entity: light.living_room_level_on_off
+                    state: 'on'
+                card:
+                  type: custom:mushroom-light-card
+                  entity: light.living_room_level_on_off
+                  hide_state: true
+                  show_brightness_control: true
+                  tap_action:
+                    action: toggle
+                  hold_action:
+                    action: more-info
+                  icon: mdi:sofa
+                  name: Living Room
+                  use_light_color: true
+                  double_tap_action:
+                    action: none
+                  layout: horizontal
+              - type: conditional
+                conditions:
+                  - entity: light.lamp
+                    state: 'on'
+                card:
+                  type: custom:mushroom-light-card
+                  entity: light.lamp
+                  show_brightness_control: true
+                  hide_state: true
+                  tap_action:
+                    action: toggle
+                  hold_action:
+                    action: more-info
+                  icon: mdi:floor-lamp
+                  use_light_color: true
+                  double_tap_action:
+                    action: none
+                  layout: horizontal
+              - type: conditional
+                conditions:
+                  - entity: light.goveetv
+                    state: 'on'
+                card:
+                  type: custom:mushroom-light-card
+                  entity: light.goveetv
+                  show_brightness_control: true
+                  hide_state: true
+                  tap_action:
+                    action: toggle
+                  hold_action:
+                    action: more-info
+                  icon: mdi:led-strip-variant
+                  use_light_color: true
+                  double_tap_action:
+                    action: none
+                  layout: horizontal
+              - type: conditional
+                conditions:
+                  - entity: light.kitchen_spots
+                    state: 'on'
+                card:
+                  type: custom:mushroom-light-card
+                  entity: light.kitchen_spots
+                  icon: mdi:silverware-fork-knife
+                  show_brightness_control: true
+                  hide_state: true
+                  tap_action:
+                    action: toggle
+                  hold_action:
+                    action: more-info
+                  double_tap_action:
+                    action: none
+                  show_color_temp_control: true
+                  layout: horizontal
+              - type: conditional
+                conditions:
+                  - entity: light.table
+                    state: 'on'
+                card:
+                  type: custom:mushroom-light-card
+                  entity: light.table
+                  show_brightness_control: true
+                  hide_state: true
+                  tap_action:
+                    action: toggle
+                  hold_action:
+                    action: more-info
+                  icon: mdi:ceiling-light
+                  double_tap_action:
+                    action: none
+                  use_light_color: true
+                  layout: horizontal
+              - type: conditional
+                conditions:
+                  - entity: light.bedroom
+                    state: 'on'
+                card:
+                  type: custom:mushroom-light-card
+                  entity: light.bedroom
+                  show_brightness_control: true
+                  show_color_temp_control: true
+                  hide_state: true
+                  tap_action:
+                    action: toggle
+                  hold_action:
+                    action: more-info
+                  icon: mdi:bed-king
+                  double_tap_action:
+                    action: none
+                  layout: horizontal
+              - type: conditional
+                conditions:
+                  - entity: light.led1
+                    state: 'on'
+                card:
+                  type: custom:mushroom-light-card
+                  entity: light.led1
+                  show_brightness_control: true
+                  show_color_temp_control: true
+                  hide_state: true
+                  tap_action:
+                    action: toggle
+                  hold_action:
+                    action: more-info
+                  icon: mdi:led-strip-variant
+                  name: Bed LED
+                  double_tap_action:
+                    action: none
+                  show_color_control: true
+              - type: conditional
+                conditions:
+                  - entity: light.landing
+                    state: 'on'
+                card:
+                  type: custom:mushroom-light-card
+                  entity: light.landing
+                  show_brightness_control: true
+                  hide_state: true
+                  tap_action:
+                    action: toggle
+                  hold_action:
+                    action: more-info
+                  icon: mdi:home-floor-1
+                  use_light_color: true
+                  double_tap_action:
+                    action: none
+                  layout: horizontal
+              - type: conditional
+                conditions:
+                  - entity: light.office
+                    state: 'on'
+                card:
+                  type: custom:mushroom-light-card
+                  entity: light.office
+                  show_brightness_control: true
+                  hide_state: true
+                  tap_action:
+                    action: toggle
+                  hold_action:
+                    action: more-info
+                  icon: mdi:desktop-classic
+                  double_tap_action:
+                    action: none
+                  use_light_color: true
+                  layout: horizontal
+              - type: conditional
+                conditions:
+                  - entity: light.kitchen_led
+                    state: 'on'
+                card:
+                  type: custom:mushroom-light-card
+                  entity: light.kitchen_led
+                  icon: mdi:countertop
+                  show_brightness_control: true
+                  show_color_temp_control: true
+                  show_color_control: true
+                  tap_action:
+                    action: toggle
+                  hide_state: true
+                  use_light_color: true
+                  hold_action:
+                    action: more-info
+                  double_tap_action:
+                    action: none
+  - theme: Backend-selected
+    title: rooms
+    path: rooms
+    icon: modern
+    badges: []
+    cards:
+      - type: horizontal-stack
+        cards:
+          - type: custom:mushroom-template-card
+            primary: ''
+            icon: mdi:home
+            tap_action:
+              action: navigate
+              navigation_path: /lovelace-unused/
+            layout: vertical
+            hold_action:
+              action: none
+            double_tap_action:
+              action: none
+            icon_color: blue
+            picture: /local/icons/house.png
+          - type: custom:mushroom-template-card
+            primary: ''
+            icon: mdi:lightbulb-multiple
+            layout: vertical
+            tap_action:
+              action: navigate
+              navigation_path: /lovelace-unused/lights
+            hold_action:
+              action: call-service
+              service: script.internal_all_off
+              service_data: {}
+              target: {}
+            double_tap_action:
+              action: none
+            icon_color: orange
+            picture: /local/icons/light.png
+          - type: custom:mushroom-template-card
+            primary: ''
+            icon: mdi:home-modern
+            tap_action:
+              action: navigate
+              navigation_path: /lovelace-unused/rooms
+            layout: vertical
+            hold_action:
+              action: none
+            double_tap_action:
+              action: none
+            icon_color: red
+            picture: /local/icons/room.png
+          - type: custom:mushroom-template-card
+            primary: ''
+            layout: vertical
+            icon_color: green
+            icon: mdi:shield
+            tap_action:
+              action: navigate
+              navigation_path: /lovelace-unused/security
+            hold_action:
+              action: none
+            double_tap_action:
+              action: none
+            picture: /local/icons/lock.png
+          - type: custom:mushroom-template-card
+            primary: ''
+            icon: mdi:devices
+            layout: vertical
+            tap_action:
+              action: navigate
+              navigation_path: /lovelace-unused/other
+            hold_action:
+              action: none
+            double_tap_action:
+              action: none
+            icon_color: purple
+            picture: /local/icons/automation.png
+      - type: custom:mushroom-chips-card
+        chips:
+          - type: menu
+          - type: back
+          - type: template
+            double_tap_action:
+              action: none
+            content: ''
+            hold_action:
+              action: none
+            tap_action:
+              action: call-service
+              service: script.livingroom
+              data: {}
+              target: {}
+            icon: ''
+            picture: /local/icons/sofa.png
+          - type: template
+            double_tap_action:
+              action: none
+            content: ''
+            hold_action:
+              action: none
+            tap_action:
+              action: call-service
+              service: script.kitchen
+              data: {}
+              target: {}
+            icon: ''
+            picture: /local/icons/kitchen.png
+          - type: template
+            tap_action:
+              action: call-service
+              service: script.hall
+              data: {}
+              target: {}
+            content: ''
+            double_tap_action:
+              action: none
+            hold_action:
+              action: none
+            picture: /local/icons/coat.png
+          - type: template
+            double_tap_action:
+              action: none
+            content: ''
+            tap_action:
+              action: call-service
+              service: script.master_bedroom
+              data: {}
+              target: {}
+            hold_action:
+              action: none
+            picture: /local/icons/bed.png
+          - type: template
+            double_tap_action:
+              action: none
+            content: ''
+            tap_action:
+              action: call-service
+              service: script.office
+              data: {}
+              target: {}
+            hold_action:
+              action: none
+            picture: /local/icons/computer.png
+        alignment: start
+      - type: vertical-stack
+        cards:
+          - type: custom:mushroom-chips-card
+            chips:
+              - type: conditional
+                conditions:
+                  - entity: sensor.hive_mode
+                    state: none
+                chip:
+                  type: template
+                  double_tap_action:
+                    action: none
+                  icon: mdi:fast-forward-30
+                  content: Boost Heating
+                  hold_action:
+                    action: none
+                  tap_action:
+                    action: call-service
+                    service: hive.boost_heating_on
+                    data:
+                      time_period: '00:30:00'
+                      temperature: 22.5
+                    target:
+                      device_id: ################################
+              - type: conditional
+                conditions:
+                  - entity: sensor.hive_mode
+                    state: none
+                chip:
+                  type: template
+                  double_tap_action:
+                    action: none
+                  icon: mdi:fast-forward-60
+                  content: Boost Heating
+                  hold_action:
+                    action: none
+                  tap_action:
+                    action: call-service
+                    service: hive.boost_heating_on
+                    data:
+                      time_period: '01:00:00'
+                      temperature: 22.5
+                    target:
+                      device_id: ################################
+              - type: conditional
+                conditions:
+                  - entity: sensor.hive_mode
+                    state: boost
+                chip:
+                  type: template
+                  double_tap_action:
+                    action: none
+                  icon: mdi:hvac-off
+                  content: Heating Off
+                  hold_action:
+                    action: none
+                  tap_action:
+                    action: call-service
+                    service: hive.boost_heating_off
+                    data:
+                      entity_id: climate.thermostat_2
+                    target: {}
+            alignment: center
+      - type: conditional
+        conditions:
+          - entity: input_boolean.livingroom
+            state: 'on'
+        card:
+          type: vertical-stack
+          cards:
+            - type: custom:mushroom-title-card
+              title: ''
+              subtitle: Living Room
+            - square: false
+              columns: 2
+              type: grid
+              cards:
+                - type: custom:mushroom-light-card
+                  entity: light.living_room_level_on_off
+                  show_brightness_control: true
+                  tap_action:
+                    action: toggle
+                  hold_action:
+                    action: more-info
+                  icon: mdi:sofa
+                  name: Main
+                  use_light_color: true
+                  double_tap_action:
+                    action: none
+                  secondary_info: none
+                  fill_container: false
+                - type: custom:mushroom-light-card
+                  entity: light.lamp
+                  show_brightness_control: true
+                  tap_action:
+                    action: toggle
+                  hold_action:
+                    action: more-info
+                  icon: mdi:floor-lamp
+                  use_light_color: true
+                  double_tap_action:
+                    action: none
+                  secondary_info: none
+                - type: custom:mushroom-light-card
+                  entity: light.goveetv
+                  show_brightness_control: true
+                  tap_action:
+                    action: toggle
+                  hold_action:
+                    action: more-info
+                  icon: mdi:led-strip-variant
+                  use_light_color: true
+                  double_tap_action:
+                    action: none
+                  fill_container: true
+                  secondary_info: none
+                  show_color_control: true
+                - type: vertical-stack
+                  cards:
+                    - type: custom:mushroom-template-card
+                      primary: >-
+                        Server {% if is_state('binary_sensor.server', 'on')
+                        %}on 
+
+                        {% elif is_state('binary_sensor.server', 'off') %}off
+
+                        {% endif %}
+                      icon: mdi:server-network
+                      tap_action:
+                        action: none
+                      hold_action:
+                        action: none
+                      double_tap_action:
+                        action: none
+                      icon_color: |-
+                        {% if is_state('binary_sensor.server', 'on') %}
+                        green
+                        {% elif is_state('binary_sensor.server', 'off') %}
+                        red
+                        {% endif %}
+                      badge_color: |-
+                        {% if is_state('binary_sensor.server', 'on') %}
+                        green
+                        {% elif is_state('binary_sensor.server', 'off') %}
+                        red
+                        {% endif %}
+                      badge_icon: |-
+                        {% if is_state('binary_sensor.server', 'on') %}
+                        mdi:check-circle
+                        {% elif is_state('binary_sensor.server', 'off') %}
+                        mdi:alpha-x-circle
+                        {% endif %}
+                      picture: /local/icons/server.png
+                    - type: custom:mushroom-template-card
+                      primary: >-
+                        Plug {% if
+                        is_state('switch.tz3000_r6buo8ba_ts011f_6e8b0060_on_off',
+                        'on') %}on 
+
+                        {% elif
+                        is_state('switch.tz3000_r6buo8ba_ts011f_6e8b0060_on_off',
+                        'off') %}off
+
+                        {% endif %}
+                      icon: hue:plug-uk
+                      tap_action:
+                        action: none
+                      hold_action:
+                        action: none
+                      double_tap_action:
+                        action: none
+                      icon_color: >-
+                        {% if
+                        is_state('switch.tz3000_r6buo8ba_ts011f_6e8b0060_on_off',
+                        'on') %}
+
+                        green
+
+                        {% elif
+                        is_state('switch.tz3000_r6buo8ba_ts011f_6e8b0060_on_off',
+                        'off') %}
+
+                        red
+
+                        {% endif %}
+                      picture: /local/icons/plug.png
+                      badge_icon: >-
+                        {% if
+                        is_state('switch.tz3000_r6buo8ba_ts011f_6e8b0060_on_off',
+                        'on') %}
+
+                        mdi:check-circle
+
+                        {% elif
+                        is_state('switch.tz3000_r6buo8ba_ts011f_6e8b0060_on_off',
+                        'off') %}
+
+                        mdi:alpha-x-circle
+
+                        {% endif %}
+                      badge_color: >-
+                        {% if
+                        is_state('switch.tz3000_r6buo8ba_ts011f_6e8b0060_on_off',
+                        'on') %}
+
+                        green
+
+                        {% elif
+                        is_state('switch.tz3000_r6buo8ba_ts011f_6e8b0060_on_off',
+                        'off') %}
+
+                        red
+
+                        {% endif %}
+            - type: vertical-stack
+              cards:
+                - type: conditional
+                  conditions:
+                    - entity: media_player.lg_tv
+                      state: 'off'
+                  card:
+                    type: custom:mushroom-template-card
+                    primary: TV Off
+                    icon: mdi:television-classic
+                    double_tap_action:
+                      action: none
+                    tap_action:
+                      action: call-service
+                      service: wake_on_lan.send_magic_packet
+                      service_data:
+                        mac: ##-##-##-##-##-##
+                      target: {}
+                    hold_action:
+                      action: none
+                    icon_color: red
+                    badge_icon: ''
+                - type: conditional
+                  conditions:
+                    - entity: media_player.lg_tv
+                      state: 'on'
+                  card:
+                    type: custom:mushroom-media-player-card
+                    entity: media_player.lg_tv
+                    volume_controls:
+                      - volume_mute
+                      - volume_set
+                      - volume_buttons
+                    media_controls:
+                      - on_off
+                      - play_pause_stop
+                    use_media_info: true
+                    name: TV
+                    hold_action:
+                      action: none
+                    double_tap_action:
+                      action: none
+                    tap_action:
+                      action: none
+                - type: conditional
+                  conditions:
+                    - entity: media_player.lg_tv
+                      state: 'on'
+                  card:
+                    type: horizontal-stack
+                    cards:
+                      - type: custom:mushroom-template-card
+                        icon: mdi:youtube
+                        layout: vertical
+                        double_tap_action:
+                          action: none
+                        icon_color: red
+                        hold_action:
+                          action: none
+                        tap_action:
+                          action: call-service
+                          service: media_player.select_source
+                          service_data:
+                            source: YouTube
+                          target:
+                            device_id: ################################
+                      - type: custom:mushroom-template-card
+                        icon: mdi:plex
+                        layout: vertical
+                        tap_action:
+                          action: call-service
+                          service: media_player.select_source
+                          service_data:
+                            source: Plex
+                          target:
+                            device_id: ################################
+                        hold_action:
+                          action: none
+                        double_tap_action:
+                          action: none
+                        multiline_secondary: false
+                        icon_color: yellow
+                      - type: custom:mushroom-template-card
+                        icon: mdi:desktop-classic
+                        layout: vertical
+                        tap_action:
+                          action: call-service
+                          service: media_player.select_source
+                          service_data:
+                            source: PC
+                          target:
+                            device_id: ################################
+                        hold_action:
+                          action: none
+                        double_tap_action:
+                          action: none
+                      - type: custom:mushroom-template-card
+                        icon: mdi:netflix
+                        layout: vertical
+                        tap_action:
+                          action: call-service
+                          service: media_player.select_source
+                          service_data:
+                            source: Netflix
+                          target:
+                            device_id: ################################
+                        hold_action:
+                          action: none
+                        double_tap_action:
+                          action: none
+                        icon_color: red
+                      - type: custom:mushroom-template-card
+                        icon: mdi:alpha-a-box
+                        layout: vertical
+                        tap_action:
+                          action: call-service
+                          service: media_player.select_source
+                          service_data:
+                            source: Amazon Prime Video
+                          target:
+                            device_id: ################################
+                        hold_action:
+                          action: none
+                        double_tap_action:
+                          action: none
+                        icon_color: blue
+                      - type: custom:mushroom-template-card
+                        icon: mdi:television-box
+                        layout: vertical
+                        tap_action:
+                          action: call-service
+                          service: media_player.select_source
+                          service_data:
+                            source: Live TV
+                          target:
+                            device_id: ################################
+                        icon_color: green
+                - type: conditional
+                  conditions:
+                    - entity: media_player.lg_tv
+                      state: 'on'
+                  card:
+                    type: custom:mushroom-template-card
+                    primary: Click for remote
+                    secondary: ''
+                    icon: mdi:remote-tv
+                    tap_action:
+                      action: navigate
+                      navigation_path: /lovelace-unused/livingroom
+                    hold_action:
+                      action: none
+                    double_tap_action:
+                      action: none
+      - type: conditional
+        conditions:
+          - entity: input_boolean.kitchen
+            state: 'on'
+        card:
+          type: vertical-stack
+          cards:
+            - type: custom:mushroom-title-card
+              title: ''
+              subtitle: Kitchen
+            - square: false
+              columns: 2
+              type: grid
+              cards:
+                - type: custom:mushroom-light-card
+                  entity: light.spots
+                  show_brightness_control: true
+                  tap_action:
+                    action: toggle
+                  hold_action:
+                    action: more-info
+                  icon: hue:bulb-group-centura-round
+                  name: Main
+                  use_light_color: true
+                  double_tap_action:
+                    action: none
+                  secondary_info: none
+                  fill_container: false
+                  show_color_temp_control: true
+                - type: custom:mushroom-light-card
+                  entity: light.table
+                  show_brightness_control: true
+                  tap_action:
+                    action: toggle
+                  hold_action:
+                    action: more-info
+                  icon: mdi:silverware-fork-knife
+                  use_light_color: true
+                  double_tap_action:
+                    action: none
+                  secondary_info: none
+                - type: custom:mushroom-light-card
+                  entity: light.kitchen_2
+                  show_brightness_control: true
+                  tap_action:
+                    action: toggle
+                  hold_action:
+                    action: more-info
+                  icon: mdi:led-strip-variant
+                  use_light_color: true
+                  double_tap_action:
+                    action: none
+                  fill_container: true
+                  secondary_info: none
+                  show_color_control: true
+                - type: vertical-stack
+                  cards:
+                    - type: custom:mushroom-template-card
+                      primary: Colour
+                      secondary: ''
+                      icon: mdi:home
+                      tap_action:
+                        action: call-service
+                        service: automation.toggle
+                        data: {}
+                        target:
+                          entity_id: automation.color_loop
+                      hold_action:
+                        action: none
+                      double_tap_action:
+                        action: none
+                    - type: custom:mushroom-template-card
+                      primary: '{{ states(''sensor.hue_motion_sensor_1_temperature'')}}°C'
+                      secondary: ''
+                      icon: mdi:thermometer
+                      picture: /local/icons/thermometer.png
+            - type: vertical-stack
+              cards:
+                - type: custom:mushroom-media-player-card
+                  entity: media_player.kitchentv
+                  volume_controls:
+                    - volume_mute
+                    - volume_set
+                    - volume_buttons
+                  media_controls:
+                    - on_off
+                    - play_pause_stop
+                  use_media_info: true
+                  name: TV
+                  icon: mdi:television-classic
+      - type: conditional
+        conditions:
+          - entity: input_boolean.hallway
+            state: 'on'
+        card:
+          type: vertical-stack
+          cards:
+            - type: custom:mushroom-title-card
+              title: ''
+              subtitle: Hall
+            - square: false
+              columns: 2
+              type: grid
+              cards:
+                - type: custom:mushroom-light-card
+                  entity: light.front_door
+                  show_brightness_control: true
+                  tap_action:
+                    action: toggle
+                  hold_action:
+                    action: more-info
+                  icon: hue:room-hallway
+                  name: Main
+                  use_light_color: true
+                  double_tap_action:
+                    action: none
+                  secondary_info: none
+                  fill_container: false
+                  show_color_temp_control: false
+                - type: custom:mushroom-light-card
+                  entity: light.hall
+                  show_brightness_control: true
+                  tap_action:
+                    action: toggle
+                  hold_action:
+                    action: more-info
+                  icon: hue:downstairs
+                  use_light_color: true
+                  double_tap_action:
+                    action: none
+                  secondary_info: none
+                - type: custom:mushroom-light-card
+                  entity: light.landing
+                  show_brightness_control: true
+                  tap_action:
+                    action: toggle
+                  hold_action:
+                    action: more-info
+                  icon: hue:room-stairs
+                  use_light_color: true
+                  double_tap_action:
+                    action: none
+                  fill_container: true
+                  secondary_info: none
+                  show_color_control: true
+                - type: vertical-stack
+                  cards:
+                    - type: custom:mushroom-light-card
+                      entity: light.toilet_on_off
+                      name: Toilet
+                      icon: mdi:toilet
+                      use_light_color: true
+                      secondary_info: none
+                      tap_action:
+                        action: toggle
+                      hold_action:
+                        action: more-info
+                      double_tap_action:
+                        action: none
+                    - type: custom:mushroom-template-card
+                      primary: '{{ states(''sensor.hive_current'')}}°C'
+                      secondary: ''
+                      icon: mdi:thermometer
+                      tap_action:
+                        action: none
+                      hold_action:
+                        action: none
+                      double_tap_action:
+                        action: none
+                      picture: /local/icons/thermometer.png
+      - type: conditional
+        conditions:
+          - entity: input_boolean.masterbedroom
+            state: 'on'
+        card:
+          type: vertical-stack
+          cards:
+            - type: custom:mushroom-title-card
+              title: ''
+              subtitle: Bedroom
+            - square: false
+              columns: 2
+              type: grid
+              cards:
+                - type: custom:mushroom-light-card
+                  entity: light.bedroom
+                  show_brightness_control: true
+                  tap_action:
+                    action: toggle
+                  hold_action:
+                    action: more-info
+                  icon: hue:room-bedroom
+                  name: Main
+                  use_light_color: true
+                  double_tap_action:
+                    action: none
+                  secondary_info: none
+                  fill_container: false
+                  show_color_temp_control: true
+                - type: custom:mushroom-light-card
+                  entity: light.led1
+                  show_brightness_control: true
+                  tap_action:
+                    action: toggle
+                  hold_action:
+                    action: more-info
+                  icon: hue:lightstrip
+                  use_light_color: true
+                  double_tap_action:
+                    action: none
+                  secondary_info: none
+                  name: LED
+                  show_color_control: true
+                - type: custom:mushroom-light-card
+                  entity: light.ensuite_on_off
+                  show_brightness_control: true
+                  tap_action:
+                    action: toggle
+                  hold_action:
+                    action: more-info
+                  icon: mdi:shower-head
+                  use_light_color: true
+                  double_tap_action:
+                    action: none
+                  fill_container: true
+                  secondary_info: none
+                  show_color_control: true
+                  name: Ensuite
+      - type: conditional
+        conditions:
+          - entity: input_boolean.office
+            state: 'on'
+        card:
+          type: vertical-stack
+          cards:
+            - type: custom:mushroom-title-card
+              title: ''
+              subtitle: Office
+            - square: false
+              columns: 2
+              type: grid
+              cards:
+                - type: custom:mushroom-light-card
+                  entity: light.office
+                  show_brightness_control: true
+                  tap_action:
+                    action: toggle
+                  hold_action:
+                    action: more-info
+                  icon: hue:room-office
+                  name: Main
+                  use_light_color: true
+                  double_tap_action:
+                    action: none
+                  secondary_info: none
+                  fill_container: true
+                  show_color_temp_control: false
+                - type: vertical-stack
+                  cards:
+                    - type: custom:mushroom-template-card
+                      primary: >-
+                        Computer {% if is_state('binary_sensor.pc_status', 'on')
+                        %}on 
+
+                        {% elif is_state('binary_sensor.pc_status', 'off') %}off
+
+                        {% endif %}
+                      icon: mdi:desktop-classic
+                      tap_action:
+                        action: none
+                      hold_action:
+                        action: none
+                      double_tap_action:
+                        action: none
+                      icon_color: |-
+                        {% if is_state('binary_sensor.pc_status', 'on') %}
+                        green
+                        {% elif is_state('binary_sensor.pc_status', 'off') %}
+                        red
+                        {% endif %}
+                      badge_icon: |-
+                        {% if is_state('binary_sensor.pc_status', 'on') %}
+                        mdi:check-circle
+                        {% elif is_state('binary_sensor.pc_status', 'off') %}
+                        mdi:alpha-x-circle
+                        {% endif %}
+                      badge_color: |-
+                        {% if is_state('binary_sensor.pc_status', 'on') %}
+                        green
+                        {% elif is_state('binary_sensor.pc_status', 'off') %}
+                        red
+                        {% endif %}
+                      picture: /local/icons/computer.png
+                    - type: custom:mushroom-template-card
+                      primary: Plug {{ states('switch.plug_2_on_off') }}
+                      icon: hue:plug-uk
+                      tap_action:
+                        action: toggle
+                      hold_action:
+                        action: none
+                      double_tap_action:
+                        action: none
+                      icon_color: |-
+                        {% if is_state('switch.plug_2_on_off', 'on') %}
+                        green
+                        {% elif is_state('switch.plug_2_on_off', 'off') %}
+                        red
+                        {% endif %}
+                      entity: switch.plug_2_on_off
+                      picture: /local/icons/plug.png
+                      badge_color: |-
+                        {% if is_state('switch.plug_2_on_off', 'on') %}
+                        green
+                        {% elif is_state('switch.plug_2_on_off', 'off') %}
+                        red
+                        {% endif %}
+                      badge_icon: |-
+                        {% if is_state('switch.plug_2_on_off', 'on') %}
+                        mdi:check-circle
+                        {% elif is_state('switch.plug_2_on_off', 'off') %}
+                        mdi:alpha-x-circle
+                        {% endif %}
+            - type: horizontal-stack
+              cards:
+                - type: custom:mushroom-template-card
+                  primary: ''
+                  icon: mdi:power-plug
+                  icon_color: green
+                  hold_action:
+                    action: none
+                  double_tap_action:
+                    action: none
+                  tap_action:
+                    action: call-service
+                    service: wake_on_lan.send_magic_packet
+                    service_data:
+                      mac: 10:7B:44:93:B8:21
+                    target: {}
+                  layout: vertical
+                - type: custom:mushroom-template-card
+                  primary: ''
+                  icon: mdi:lock
+                  hold_action:
+                    action: none
+                  double_tap_action:
+                    action: none
+                  tap_action:
+                    action: call-service
+                    service: button.press
+                    data: {}
+                    target:
+                      entity_id: button.8700k_lock
+                  icon_color: blue
+                  badge_color: Blue
+                  layout: vertical
+                - type: custom:mushroom-template-card
+                  primary: ''
+                  icon: mdi:sleep
+                  icon_color: orange
+                  double_tap_action:
+                    action: none
+                  hold_action:
+                    action: none
+                  tap_action:
+                    action: call-service
+                    service: button.press
+                    target:
+                      entity_id: button.8700k_sleep
+                    data: {}
+                  badge_color: ''
+                  layout: vertical
+                - type: custom:mushroom-template-card
+                  primary: ''
+                  icon: mdi:power-plug-off
+                  icon_color: red
+                  hold_action:
+                    action: none
+                  double_tap_action:
+                    action: none
+                  tap_action:
+                    action: call-service
+                    service: button.press
+                    target:
+                      entity_id: button.8700k_shutdown
+                    data: {}
+                  layout: vertical
+  - theme: Backend-selected
+    title: security
+    path: security
+    icon: mdi:shield-lock
+    badges: []
+    cards:
+      - type: vertical-stack
+        cards:
+          - type: horizontal-stack
+            cards:
+              - type: custom:mushroom-template-card
+                primary: ''
+                icon: mdi:home
+                tap_action:
+                  action: navigate
+                  navigation_path: /lovelace-unused/
+                layout: vertical
+                hold_action:
+                  action: none
+                double_tap_action:
+                  action: none
+                icon_color: blue
+                picture: /local/icons/house.png
+              - type: custom:mushroom-template-card
+                primary: ''
+                icon: mdi:lightbulb-multiple
+                layout: vertical
+                tap_action:
+                  action: navigate
+                  navigation_path: /lovelace-unused/lights
+                hold_action:
+                  action: call-service
+                  service: script.internal_all_off
+                  service_data: {}
+                  target: {}
+                double_tap_action:
+                  action: none
+                icon_color: orange
+                picture: /local/icons/light.png
+              - type: custom:mushroom-template-card
+                primary: ''
+                icon: mdi:home-modern
+                tap_action:
+                  action: navigate
+                  navigation_path: /lovelace-unused/rooms
+                layout: vertical
+                hold_action:
+                  action: none
+                double_tap_action:
+                  action: none
+                icon_color: red
+                picture: /local/icons/room.png
+              - type: custom:mushroom-template-card
+                primary: ''
+                layout: vertical
+                icon_color: green
+                icon: mdi:shield
+                tap_action:
+                  action: navigate
+                  navigation_path: /lovelace-unused/security
+                hold_action:
+                  action: none
+                double_tap_action:
+                  action: none
+                picture: /local/icons/lock.png
+              - type: custom:mushroom-template-card
+                primary: ''
+                icon: mdi:devices
+                layout: vertical
+                tap_action:
+                  action: navigate
+                  navigation_path: /lovelace-unused/other
+                hold_action:
+                  action: none
+                double_tap_action:
+                  action: none
+                icon_color: purple
+                picture: /local/icons/automation.png
+          - type: custom:mushroom-chips-card
+            chips:
+              - type: menu
+              - type: back
+            alignment: start
+          - type: custom:mushroom-alarm-control-panel-card
+            entity: alarm_control_panel.alarm
+            states:
+              - armed_away
+              - armed_home
+          - type: picture-entity
+            entity: camera.doorbell
+            tap_action:
+              action: none
+            hold_action:
+              action: none
+          - type: vertical-stack
+            cards:
+              - type: custom:mushroom-template-card
+                primary: ''
+                secondary: Motion Sensors
+                icon: ''
+                layout: vertical
+                tap_action:
+                  action: none
+                hold_action:
+                  action: none
+                double_tap_action:
+                  action: none
+              - square: false
+                columns: 3
+                type: grid
+                cards:
+                  - type: custom:mushroom-template-card
+                    secondary: '{{relative_time(states.sensor.hall_motion.last_changed) }}'
+                    icon: mdi:motion-sensor
+                    multiline_secondary: false
+                    layout: vertical
+                    primary: Hall
+                    icon_color: >-
+                      {% if ((as_timestamp(now()) -
+                      as_timestamp(states.sensor.hall_motion.last_changed |
+                      default(0)) | int ) | timestamp_custom("%M", false)|int <
+                      1) %}
+
+                      red
+
+                      {% elif ((as_timestamp(now()) -
+                      as_timestamp(states.sensor.hall_motion.last_changed |
+                      default(0)) | int ) | timestamp_custom("%M", false)|int <
+                      3) %}
+
+                      orange
+
+                      {% elif ((as_timestamp(now()) -
+                      as_timestamp(states.sensor.hall_motion.last_changed |
+                      default(0)) | int ) | timestamp_custom("%M", false)|int <
+                      20) %}
+
+                      green
+
+                      {% elif ((as_timestamp(now()) -
+                      as_timestamp(states.sensor.hall_motion.last_changed |
+                      default(0)) | int ) | timestamp_custom("%M", false)|int >
+                      20) %}
+
+                      blue
+
+                      {% endif %}
+                    tap_action:
+                      action: none
+                    hold_action:
+                      action: none
+                    double_tap_action:
+                      action: none
+                  - type: custom:mushroom-template-card
+                    secondary: >-
+                      {{relative_time(states.sensor.living_motion.last_changed)
+                      }}
+                    icon: mdi:motion-sensor
+                    layout: vertical
+                    primary: Living Room
+                    icon_color: >
+                      {% if ((as_timestamp(now()) -
+                      as_timestamp(states.sensor.living_motion.last_changed |
+                      default(0)) | int ) | timestamp_custom("%M", false)|int <
+                      1) %}
+
+                      red
+
+                      {% elif ((as_timestamp(now()) -
+                      as_timestamp(states.sensor.living_motion.last_changed |
+                      default(0)) | int ) | timestamp_custom("%M", false)|int <
+                      3) %}
+
+                      orange
+
+                      {% elif ((as_timestamp(now()) -
+                      as_timestamp(states.sensor.living_motion.last_changed |
+                      default(0)) | int ) | timestamp_custom("%M", false)|int <
+                      20) %}
+
+                      green
+
+                      {% elif ((as_timestamp(now()) -
+                      as_timestamp(states.sensor.living_motion.last_changed |
+                      default(0)) | int ) | timestamp_custom("%M", false)|int >
+                      20) %}
+
+                      blue
+
+                      {% endif %}
+                    double_tap_action:
+                      action: none
+                    tap_action:
+                      action: none
+                    hold_action:
+                      action: none
+                  - type: custom:mushroom-template-card
+                    secondary: >-
+                      {{relative_time(states.sensor.kitchen_motion.last_changed)
+                      }}
+                    icon: mdi:motion-sensor
+                    layout: vertical
+                    primary: Kitchen
+                    badge_color: ''
+                    icon_color: >
+                      {% if ((as_timestamp(now()) -
+                      as_timestamp(states.sensor.kitchen_motion.last_changed |
+                      default(0)) | int ) | timestamp_custom("%M", false)|int <
+                      1) %}
+
+                      red
+
+                      {% elif ((as_timestamp(now()) -
+                      as_timestamp(states.sensor.kitchen_motion.last_changed |
+                      default(0)) | int ) | timestamp_custom("%M", false)|int <
+                      3) %}
+
+                      orange
+
+                      {% elif ((as_timestamp(now()) -
+                      as_timestamp(states.sensor.kitchen_motion.last_changed |
+                      default(0)) | int ) | timestamp_custom("%M", false)|int <
+                      20) %}
+
+                      green
+
+                      {% elif ((as_timestamp(now()) -
+                      as_timestamp(states.sensor.kitchen_motion.last_changed |
+                      default(0)) | int ) | timestamp_custom("%M", false)|int >
+                      20) %}
+
+                      blue
+
+                      {% endif %}
+                    double_tap_action:
+                      action: none
+                    tap_action:
+                      action: none
+                    hold_action:
+                      action: none
+              - type: custom:mushroom-template-card
+                primary: ''
+                secondary: Door Sensors
+                icon: ''
+                layout: vertical
+                tap_action:
+                  action: none
+                hold_action:
+                  action: none
+                double_tap_action:
+                  action: none
+              - square: false
+                columns: 3
+                type: grid
+                cards:
+                  - type: custom:mushroom-template-card
+                    secondary: '{{relative_time(states.sensor.front_open.last_changed) }}'
+                    icon: >-
+                      {% if
+                      is_state('binary_sensor.lumi_door_front_ias_zone','on')
+                      %} 
+
+                      mdi:door-closed
+
+                      {% elif
+                      is_state('binary_sensor.lumi_door_front_ias_zone','off')
+                      %}
+
+                      mdi:door-open
+
+                      {% endif %}
+                    multiline_secondary: false
+                    layout: vertical
+                    primary: >-
+                      Front 
+
+                      {% if
+                      is_state('binary_sensor.lumi_door_front_ias_zone','on')
+                      %} 
+
+                      open
+
+                      {% elif
+                      is_state('binary_sensor.lumi_door_front_ias_zone','off')
+                      %} 
+
+                      closed
+
+                      {% endif %}
+                    icon_color: >-
+                      {% if
+                      is_state('binary_sensor.lumi_door_front_ias_zone','on')
+                      %} 
+
+                      red
+
+                      {% elif
+                      is_state('binary_sensor.lumi_door_front_ias_zone','off')
+                      %} 
+
+                      green
+
+                      {% endif %}
+                    entity: binary_sensor.lumi_door_front_ias_zone
+                    fill_container: false
+                    double_tap_action:
+                      action: none
+                    tap_action:
+                      action: none
+                    hold_action:
+                      action: none
+                  - type: custom:mushroom-template-card
+                    secondary: '{{relative_time(states.sensor.office_open.last_changed) }}'
+                    icon: >-
+                      {% if
+                      is_state('binary_sensor.lumi_door_office_ias_zone','on')
+                      %} 
+
+                      mdi:door-closed
+
+                      {% elif
+                      is_state('binary_sensor.lumi_door_office_ias_zone','off')
+                      %}
+
+                      mdi:door-open
+
+                      {% endif %}
+                    multiline_secondary: false
+                    layout: vertical
+                    primary: >-
+                      Office 
+
+                      {% if
+                      is_state('binary_sensor.lumi_door_office_ias_zone','on')
+                      %} 
+
+                      open
+
+                      {% elif
+                      is_state('binary_sensor.lumi_door_office_ias_zone','off')
+                      %} 
+
+                      closed
+
+                      {% endif %}
+                    icon_color: >-
+                      {% if
+                      is_state('binary_sensor.lumi_door_office_ias_zone','on')
+                      %} 
+
+                      red
+
+                      {% elif
+                      is_state('binary_sensor.lumi_door_office_ias_zone','off')
+                      %} 
+
+                      green
+
+                      {% endif %}
+                    entity: binary_sensor.lumi_door_office_ias_zone
+                    fill_container: false
+                    double_tap_action:
+                      action: none
+                    tap_action:
+                      action: none
+                    hold_action:
+                      action: none
+                  - type: custom:mushroom-template-card
+                    secondary: '{{relative_time(states.sensor.back_open.last_changed) }}'
+                    icon: >-
+                      {% if
+                      is_state('binary_sensor.lumi_door_back_ias_zone','on') %} 
+
+                      mdi:door-closed
+
+                      {% elif
+                      is_state('binary_sensor.lumi_door_back_ias_zone','off') %}
+
+                      mdi:door-open
+
+                      {% endif %}
+                    multiline_secondary: false
+                    layout: vertical
+                    primary: >-
+                      Back 
+
+                      {% if
+                      is_state('binary_sensor.lumi_door_back_ias_zone','on') %} 
+
+                      open
+
+                      {% elif
+                      is_state('binary_sensor.lumi_door_back_ias_zone','off')
+                      %} 
+
+                      closed
+
+                      {% endif %}
+                    icon_color: >-
+                      {% if
+                      is_state('binary_sensor.lumi_door_back_ias_zone','on') %} 
+
+                      red
+
+                      {% elif
+                      is_state('binary_sensor.lumi_door_back_ias_zone','off')
+                      %} 
+
+                      green
+
+                      {% endif %}
+                    entity: binary_sensor.lumi_door_back_ias_zone
+                    fill_container: false
+                    double_tap_action:
+                      action: none
+                    tap_action:
+                      action: none
+                    hold_action:
+                      action: none
+  - theme: Backend-selected
+    title: other
+    path: other
+    icon: mdi:devices
+    badges: []
+    cards:
+      - type: vertical-stack
+        cards:
+          - type: horizontal-stack
+            cards:
+              - type: custom:mushroom-template-card
+                primary: ''
+                icon: mdi:home
+                tap_action:
+                  action: navigate
+                  navigation_path: /lovelace-unused/
+                layout: vertical
+                hold_action:
+                  action: none
+                double_tap_action:
+                  action: none
+                icon_color: blue
+                picture: /local/icons/house.png
+              - type: custom:mushroom-template-card
+                primary: ''
+                icon: mdi:lightbulb-multiple
+                layout: vertical
+                tap_action:
+                  action: navigate
+                  navigation_path: /lovelace-unused/lights
+                hold_action:
+                  action: call-service
+                  service: script.internal_all_off
+                  service_data: {}
+                  target: {}
+                double_tap_action:
+                  action: none
+                icon_color: orange
+                picture: /local/icons/light.png
+              - type: custom:mushroom-template-card
+                primary: ''
+                icon: mdi:home-modern
+                tap_action:
+                  action: navigate
+                  navigation_path: /lovelace-unused/rooms
+                layout: vertical
+                hold_action:
+                  action: none
+                double_tap_action:
+                  action: none
+                icon_color: red
+                picture: /local/icons/room.png
+              - type: custom:mushroom-template-card
+                primary: ''
+                layout: vertical
+                icon_color: green
+                icon: mdi:shield
+                tap_action:
+                  action: navigate
+                  navigation_path: /lovelace-unused/security
+                hold_action:
+                  action: none
+                double_tap_action:
+                  action: none
+                picture: /local/icons/lock.png
+              - type: custom:mushroom-template-card
+                primary: ''
+                icon: mdi:devices
+                layout: vertical
+                tap_action:
+                  action: navigate
+                  navigation_path: /lovelace-unused/other
+                hold_action:
+                  action: none
+                double_tap_action:
+                  action: none
+                icon_color: purple
+                picture: /local/icons/automation.png
+          - type: custom:mushroom-chips-card
+            chips:
+              - type: menu
+              - type: back
+              - type: template
+                tap_action:
+                  action: call-service
+                  service: homeassistant.restart
+                  service_data: {}
+                  target: {}
+                  confirmation:
+                    text: Are you sure you want to restart Home Assistant?
+                content: Restart HA
+          - type: vertical-stack
+            cards:
+              - type: custom:mushroom-template-card
+                primary: Graphs
+                secondary: ''
+                icon: ''
+                tap_action:
+                  action: call-service
+                  service: input_boolean.toggle
+                  data: {}
+                  target:
+                    entity_id: input_boolean.graphs
+                hold_action:
+                  action: none
+                double_tap_action:
+                  action: none
+              - type: conditional
+                conditions:
+                  - entity: input_boolean.graphs
+                    state: 'on'
+                card:
+                  type: vertical-stack
+                  cards:
+                    - type: custom:mini-graph-card
+                      name: Temperatures
+                      entities:
+                        - entity: sensor.average_temp
+                          name: Hall
+                          show_fill: false
+                          show_legend: false
+                          show_line: false
+                          show_state: true
+                        - entity: sensor.accuweather_realfeel_temperature
+                          name: Outside
+                          show_line: false
+                          show_points: false
+                          show_legend: false
+                          show_state: true
+                        - entity: sensor.hive_current
+                          name: Hall
+                          show_fill: false
+                          show_legend: false
+                        - entity: sensor.hue_motion_sensor_1_temperature
+                          name: Kitchen
+                          show_fill: false
+                          show_legend: false
+                        - entity: input_boolean.day_night
+                          color: black
+                          name: Night
+                          show_line: false
+                          show_points: false
+                          show_legend: false
+                          y_axis: secondary
+                      animate: true
+                      hours_to_show: 36
+                      points_per_hour: 1
+                      icon: mdi:thermometer
+                      line_width: 3
+                      tap_action: none
+                    - type: custom:mini-graph-card
+                      name: Current Energy Consumption
+                      entities:
+                        - entity: sensor.total_power_usage
+                          name: Total
+                          show_line: false
+                          show_fill: false
+                          show_points: false
+                          show_legend: false
+                        - entity: sensor.smart_plug_office_electrical_measurement
+                          name: Office
+                          show_legend: false
+                          color: orange
+                        - entity: sensor.total_tv_power
+                          name: TVs
+                          show_legend: false
+                        - entity: sensor.smart_plug_1_usage
+                          name: Living Room
+                          show_legend: false
+                        - entity: sensor.other_power
+                          name: Other
+                          show_legend: false
+                          color: yellow
+                      animate: true
+                      hours_to_show: 36
+                      points_per_hour: 1
+                      icon: mdi:flash
+                      line_width: 2
+                      tap_action: none
+                    - type: custom:mini-graph-card
+                      name: Daily Energy Cost
+                      entities:
+                        - entity: sensor.daily_energy_price
+                      animate: true
+                      icon: mdi:currency-gbp
+                      hours_to_show: 336
+                      aggregate_func: max
+                      group_by: date
+                      show:
+                        graph: bar
+                        state: true
+                      tap_action: none
+                    - type: custom:mini-graph-card
+                      name: Network Traffic
+                      entities:
+                        - entity: sensor.tuf_ax5400_9620_kib_s_received
+                          name: Download
+                          show_state: true
+                          show_legend: false
+                          show_fill: false
+                          color: green
+                        - entity: sensor.tuf_ax5400_9620_kib_s_sent
+                          name: Upload
+                          show_state: true
+                          show_fill: false
+                          color: red
+                      animate: true
+                      hours_to_show: 12
+                      points_per_hour: 8
+                      icon: mdi:server-network
+                      line_width: 4
+                      tap_action: none
+          - type: vertical-stack
+            cards:
+              - type: custom:mushroom-template-card
+                primary: Battery Status
+                secondary: ''
+                icon: ''
+                tap_action:
+                  action: call-service
+                  service: input_boolean.toggle
+                  data: {}
+                  target:
+                    entity_id: input_boolean.buttons
+                hold_action:
+                  action: none
+                double_tap_action:
+                  action: none
+              - type: conditional
+                conditions:
+                  - entity: input_boolean.buttons
+                    state: 'on'
+                card:
+                  type: vertical-stack
+                  cards:
+                    - type: custom:mushroom-template-card
+                      primary: ''
+                      secondary: Motion Sensors
+                      icon: ''
+                      tap_action:
+                        action: none
+                      hold_action:
+                        action: none
+                      double_tap_action:
+                        action: none
+                    - square: true
+                      columns: 4
+                      type: grid
+                      cards:
+                        - type: custom:mushroom-template-card
+                          primary: Living Room
+                          secondary: >-
+                            {{
+                            states('sensor.lumi_lumi_sensor_motion_aq2_power')}}%
+                            Battery
+                          icon: mdi:motion-sensor
+                          layout: vertical
+                          icon_color: >-
+                            {%if
+                            states('sensor.lumi_lumi_sensor_motion_aq2_power') |
+                            int  < 10 %}
+
+                            red
+
+                            {%elif
+                            states('sensor.lumi_lumi_sensor_motion_aq2_power') |
+                            int  < 40 %}
+
+                            orange
+
+                            {%elif
+                            states('sensor.lumi_lumi_sensor_motion_aq2_power') |
+                            int  > 41 %}
+
+                            green
+
+                            {% endif %}
+                        - type: custom:mushroom-template-card
+                          primary: Hall
+                          secondary: >-
+                            {{
+                            states('sensor.lumi_lumi_sensor_motion_aq2_92077507_power')}}%
+                            Battery
+                          icon: mdi:motion-sensor
+                          layout: vertical
+                          double_tap_action:
+                            action: none
+                          tap_action:
+                            action: none
+                          hold_action:
+                            action: none
+                          icon_color: >-
+                            {%if
+                            states('sensor.lumi_lumi_sensor_motion_aq2_92077507_power')
+                            | int  < 10 %} red {%elif
+                            states('sensor.lumi_lumi_sensor_motion_aq2_92077507_power')
+                            | int  < 40 %} orange {%elif
+                            states('sensor.lumi_lumi_sensor_motion_aq2_92077507_power')
+                            | int  > 41 %} green {% endif %}
+                        - type: custom:mushroom-template-card
+                          primary: Kitchen
+                          secondary: >-
+                            {{ states('sensor.hue_motion_sensor_1_battery')}}%
+                            Battery
+                          icon: mdi:motion-sensor
+                          layout: vertical
+                          double_tap_action:
+                            action: none
+                          tap_action:
+                            action: none
+                          hold_action:
+                            action: none
+                          icon_color: >-
+                            {%if states('sensor.hue_motion_sensor_1_battery') |
+                            int  < 10 %}
+
+                            red
+
+                            {%elif states('sensor.hue_motion_sensor_1_battery')
+                            | int  < 40 %}
+
+                            orange
+
+                            {%elif states('sensor.hue_motion_sensor_1_battery')
+                            | int  > 41 %}
+
+                            green
+
+                            {% endif %}
+                    - type: custom:mushroom-template-card
+                      primary: ''
+                      secondary: Door Sensors
+                      icon: ''
+                      tap_action:
+                        action: none
+                      hold_action:
+                        action: none
+                      double_tap_action:
+                        action: none
+                    - square: true
+                      columns: 4
+                      type: grid
+                      cards:
+                        - type: custom:mushroom-template-card
+                          primary: Front Door
+                          secondary: >-
+                            {{
+                            states('sensor.lumi_lumi_magnet_acn001_88724c00_power')}}%
+                            Battery
+                          icon: mdi:door-closed
+                          layout: vertical
+                          icon_color: >-
+                            {%if
+                            states('sensor.lumi_lumi_magnet_acn001_88724c00_power')
+                            | int  < 10 %}
+
+                            red
+
+                            {%elif
+                            states('sensor.lumi_lumi_magnet_acn001_88724c00_power')
+                            | int  < 40 %}
+
+                            orange
+
+                            {%elif
+                            states('sensor.lumi_lumi_magnet_acn001_88724c00_power')
+                            | int  > 41 %}
+
+                            green
+
+                            {% endif %}
+                        - type: custom:mushroom-template-card
+                          primary: Office
+                          secondary: >-
+                            {{ states('sensor.lumi_lumi_magnet_acn001_power')}}%
+                            Battery
+                          icon: mdi:door-closed
+                          layout: vertical
+                          double_tap_action:
+                            action: none
+                          tap_action:
+                            action: none
+                          hold_action:
+                            action: none
+                          icon_color: >-
+                            {%if states('sensor.lumi_lumi_magnet_acn001_power')
+                            | int  < 10 %}
+
+                            red
+
+                            {%elif
+                            states('sensor.lumi_lumi_magnet_acn001_power') |
+                            int  < 40 %}
+
+                            orange
+
+                            {%elif
+                            states('sensor.lumi_lumi_magnet_acn001_power') |
+                            int  > 41 %}
+
+                            green
+
+                            {% endif %}
+                        - type: custom:mushroom-template-card
+                          primary: Back Door
+                          secondary: >-
+                            {{
+                            states('sensor.lumi_lumi_magnet_acn001_7a744c00_power')}}%
+                            Battery
+                          icon: mdi:door-closed
+                          layout: vertical
+                          double_tap_action:
+                            action: none
+                          tap_action:
+                            action: none
+                          hold_action:
+                            action: none
+                          icon_color: >-
+                            {%if
+                            states('sensor.lumi_lumi_magnet_acn001_7a744c00_power')
+                            | int  < 10 %}
+
+                            red 
+
+                            {%elif
+                            states('sensor.lumi_lumi_magnet_acn001_7a744c00_power')
+                            | int  < 40 %}
+
+                            orange
+
+                            {%elif
+                            states('sensor.lumi_lumi_magnet_acn001_7a744c00_power')
+                            | int  > 41 %} green
+
+                            {% endif %}
+                    - type: custom:mushroom-template-card
+                      primary: ''
+                      secondary: Buttons
+                      icon: ''
+                      tap_action:
+                        action: none
+                      hold_action:
+                        action: none
+                      double_tap_action:
+                        action: none
+                    - square: true
+                      columns: 4
+                      type: grid
+                      cards:
+                        - type: custom:mushroom-template-card
+                          primary: Living Room
+                          secondary: >-
+                            {{
+                            states('sensor.lumi_lumi_remote_b1acn01_power')}}%
+                            Battery
+                          icon: mdi:gesture-tap-button
+                          layout: vertical
+                          icon_color: >-
+                            {%if states('sensor.lumi_lumi_remote_b1acn01_power')
+                            | int  < 10 %}
+
+                            red
+
+                            {%elif
+                            states('sensor.lumi_lumi_remote_b1acn01_power') |
+                            int  < 40 %}
+
+                            orange
+
+                            {%elif
+                            states('sensor.lumi_lumi_remote_b1acn01_power') |
+                            int  > 41 %}
+
+                            green
+
+                            {% endif %}
+                        - type: custom:mushroom-template-card
+                          primary: Hall
+                          secondary: >-
+                            {{
+                            states('sensor.lumi_lumi_remote_b1acn01_7d78b806_power')}}%
+                            Battery
+                          icon: mdi:gesture-tap-button
+                          layout: vertical
+                          icon_color: >-
+                            {%if
+                            states('sensor.lumi_lumi_remote_b1acn01_7d78b806_power')
+                            | int  < 10 %}
+
+                            red
+
+                            {%elif
+                            states('sensor.lumi_lumi_remote_b1acn01_7d78b806_power')
+                            | int  < 40 %}
+
+                            orange
+
+                            {%elif
+                            states('sensor.lumi_lumi_remote_b1acn01_7d78b806_power')
+                            | int  > 41 %}
+
+                            green
+
+                            {% endif %}
+                        - type: custom:mushroom-template-card
+                          primary: Bedroom
+                          secondary: >-
+                            {{
+                            states('sensor.lumi_lumi_remote_b1acn01_4416d506_power')}}%
+                            Battery
+                          icon: mdi:gesture-tap-button
+                          layout: vertical
+                          tap_action:
+                            action: none
+                          hold_action:
+                            action: none
+                          double_tap_action:
+                            action: none
+                          icon_color: >-
+                            {%if
+                            states('sensor.lumi_lumi_remote_b1acn01_4416d506_power')
+                            | int  < 10 %}
+
+                            red
+
+                            {%elif
+                            states('sensor.lumi_lumi_remote_b1acn01_4416d506_power')
+                            | int  < 40 %}
+
+                            orange
+
+                            {%elif
+                            states('sensor.lumi_lumi_remote_b1acn01_4416d506_power')
+                            | int  > 41 %}
+
+                            green
+
+                            {% endif %}
+                        - type: custom:mushroom-template-card
+                          primary: Office
+                          secondary: >-
+                            {{
+                            states('sensor.lumi_lumi_remote_b1acn01_1a13d506_power')}}%
+                            Battery
+                          icon: mdi:gesture-tap-button
+                          layout: vertical
+                          double_tap_action:
+                            action: none
+                          tap_action:
+                            action: none
+                          hold_action:
+                            action: none
+                          icon_color: >-
+                            {%if
+                            states('sensor.lumi_lumi_remote_b1acn01_1a13d506_power')
+                            | int  < 10 %}
+
+                            red
+
+                            {%elif
+                            states('sensor.lumi_lumi_remote_b1acn01_1a13d506_power')
+                            | int  < 40 %}
+
+                            orange
+
+                            {%elif
+                            states('sensor.lumi_lumi_remote_b1acn01_1a13d506_power')
+                            | int  > 41 %}
+
+                            green
+
+                            {% endif %}
+                    - type: custom:mushroom-template-card
+                      primary: ''
+                      secondary: Other
+                      icon: ''
+                      tap_action:
+                        action: none
+                      hold_action:
+                        action: none
+                      double_tap_action:
+                        action: none
+                    - square: true
+                      columns: 4
+                      type: grid
+                      cards:
+                        - type: custom:mushroom-template-card
+                          primary: Living Room
+                          secondary: '{{ states(''sensor.knob_1_power'')}}% Battery'
+                          icon: mdi:radiobox-marked
+                          layout: vertical
+                          tap_action:
+                            action: none
+                          hold_action:
+                            action: none
+                          double_tap_action:
+                            action: none
+                          icon_color: |-
+                            {%if states('sensor.knob_1_power') | int  < 10 %}
+                            red
+                            {%elif states('sensor.knob_1_power') | int  < 40 %}
+                            orange
+                            {%elif states('sensor.knob_1_power') | int  > 41 %}
+                            green
+                            {% endif %}
+                        - type: custom:mushroom-template-card
+                          primary: Hall
+                          secondary: >-
+                            {{ states('sensor.thermostat_2_battery_level')}}%
+                            Battery
+                          icon: mdi:hvac
+                          layout: vertical
+                          double_tap_action:
+                            action: none
+                          tap_action:
+                            action: none
+                          hold_action:
+                            action: none
+                          icon_color: >-
+                            {%if states('sensor.thermostat_2_battery_level') |
+                            int  < 10 %}
+
+                            red
+
+                            {%elif states('sensor.thermostat_2_battery_level') |
+                            int  < 40 %}
+
+                            orange
+
+                            {%elif states('sensor.thermostat_2_battery_level') |
+                            int  > 41 %}
+
+                            green
+
+                            {% endif %}
+          - type: vertical-stack
+            cards:
+              - type: custom:mushroom-template-card
+                primary: Automations
+                secondary: ''
+                icon: ''
+                tap_action:
+                  action: call-service
+                  service: input_boolean.toggle
+                  data: {}
+                  target:
+                    entity_id: input_boolean.automations
+                hold_action:
+                  action: none
+                double_tap_action:
+                  action: none
+              - type: conditional
+                conditions:
+                  - entity: input_boolean.automations
+                    state: 'on'
+                card:
+                  type: vertical-stack
+                  cards:
+                    - type: custom:mushroom-template-card
+                      primary: ''
+                      secondary: Lights
+                      icon: ''
+                      tap_action:
+                        action: none
+                      hold_action:
+                        action: none
+                      double_tap_action:
+                        action: none
+                    - square: true
+                      columns: 4
+                      type: grid
+                      cards:
+                        - type: custom:mushroom-template-card
+                          primary: Hall
+                          icon: hue:room-hallway
+                          layout: vertical
+                          entity: automation.hall_lights
+                          icon_color: |-
+                            {% if is_state('automation.hall_lights', 'on') %}
+                            green
+                            {% elif is_state('automation.hall_lights', 'off') %}
+                            red
+                            {% endif %}
+                          tap_action:
+                            action: toggle
+                          hold_action:
+                            action: none
+                          double_tap_action:
+                            action: none
+                        - type: custom:mushroom-template-card
+                          primary: Kitchen
+                          icon: hue:room-dining
+                          entity: automation.kitchen_lights
+                          icon_color: >-
+                            {% if is_state('automation.kitchen_lights', 'on') %}
+
+                            green
+
+                            {% elif is_state('automation.kitchen_lights', 'off')
+                            %}
+
+                            red
+
+                            {% endif %}
+                          tap_action:
+                            action: toggle
+                          hold_action:
+                            action: none
+                          double_tap_action:
+                            action: none
+                          layout: vertical
+                        - type: custom:mushroom-template-card
+                          primary: Living Room
+                          icon: hue:room-living
+                          entity: automation.living_room_lights
+                          icon_color: >-
+                            {% if is_state('automation.living_room_lights',
+                            'on') %}
+
+                            green
+
+                            {% elif is_state('automation.living_room_light',
+                            'off') %}
+
+                            red
+
+                            {% endif %}
+                          tap_action:
+                            action: toggle
+                          hold_action:
+                            action: none
+                          double_tap_action:
+                            action: none
+                          layout: vertical
+                    - type: custom:mushroom-template-card
+                      primary: ''
+                      secondary: Misc
+                      icon: ''
+                      tap_action:
+                        action: none
+                      hold_action:
+                        action: none
+                      double_tap_action:
+                        action: none
+                    - square: true
+                      columns: 4
+                      type: grid
+                      cards:
+                        - type: custom:mushroom-template-card
+                          primary: Leaving
+                          icon: mdi:exit-run
+                          layout: vertical
+                          entity: automation.home_leaving
+                          icon_color: >-
+                            {% if is_state('automation.home_leaving', 'on') %}
+
+                            green
+
+                            {% elif is_state('automation.home_leaving', 'off')
+                            %}
+
+                            red
+
+                            {% endif %}
+                          tap_action:
+                            action: toggle
+                          hold_action:
+                            action: none
+                          double_tap_action:
+                            action: none
+                          fill_container: false
+                          multiline_secondary: false
+                        - type: custom:mushroom-template-card
+                          primary: Server Restart
+                          icon: mdi:server-network
+                          layout: vertical
+                          entity: automation.server_restart
+                          icon_color: >-
+                            {% if is_state('automation.server_restart', 'on') %}
+
+                            green
+
+                            {% elif is_state('automation.server_restart', 'off')
+                            %}
+
+                            red
+
+                            {% endif %}
+                          tap_action:
+                            action: toggle
+                          hold_action:
+                            action: none
+                          double_tap_action:
+                            action: none
+                        - type: custom:mushroom-template-card
+                          primary: Alarm Sound
+                          icon: mdi:alarm-bell
+                          layout: vertical
+                          entity: automation.alarm_triggered_2
+                          icon_color: >-
+                            {% if is_state('automation.alarm_triggered_2', 'on')
+                            %}
+
+                            green
+
+                            {% elif is_state('automation.alarm_triggered_2',
+                            'off') %}
+
+                            red
+
+                            {% endif %}
+                          tap_action:
+                            action: toggle
+                          hold_action:
+                            action: none
+                          double_tap_action:
+                            action: none
+                        - type: custom:mushroom-template-card
+                          primary: Alarm Lights
+                          icon: mdi:alarm-light
+                          layout: vertical
+                          entity: automation.alarm_triggered_lights
+                          icon_color: >-
+                            {% if is_state('automation.alarm_triggered_lights',
+                            'on') %}
+
+                            green
+
+                            {% elif
+                            is_state('automation.alarm_triggered_lights', 'off')
+                            %}
+
+                            red
+
+                            {% endif %}
+                          tap_action:
+                            action: toggle
+                          hold_action:
+                            action: none
+                          double_tap_action:
+                            action: none
+          - type: entities
+            entities:
+              - entity: input_number.kwh_cost
+                name: 'kWh Price '
+                secondary_info: none
+            state_color: false
+  - theme: Backend-selected
+    title: Remote
+    path: livingroom
+    icon: mdi:remote-tv
+    badges: []
+    cards:
+      - type: custom:mushroom-chips-card
+        chips:
+          - type: back
+        alignment: center
+      - type: conditional
+        conditions:
+          - entity: media_player.lg_tv
+            state: 'on'
+        card:
+          type: custom:lg-remote-control
+          color_buttons: enable
+          dimensions:
+            scale: 0.95
+          entity: media_player.lg_tv
+          colors:
+            buttons: rgba(105,105,105)
+            texts: white
+            background: rgba(0,0,0)
+  - theme: Backend-selected
+    title: test
+    path: test
+    icon: mdi:test-tube
+    badges: []
+    cards:
+      - show_name: true
+        show_icon: true
+        type: button
+        tap_action:
+          action: toggle
+        entity: input_boolean.fridge
+        show_state: true
+      - show_name: true
+        show_icon: true
+        type: button
+        tap_action:
+          action: toggle
+        entity: input_boolean.day_night
+        show_state: true
